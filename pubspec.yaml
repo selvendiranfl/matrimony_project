@@ -38,6 +38,7 @@ dependencies:
   flutter_bloc: ^8.1.6
   intl: ^0.18.0
   country_code_picker: ^3.0.0
+  firebase_core: ^2.27.0
 
 dev_dependencies:
   flutter_test:
