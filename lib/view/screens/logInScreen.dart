@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../router.dart';
 import '../bloc/loginBloc/log_in_bloc.dart';
 
 class LogInPage extends StatefulWidget {
@@ -36,7 +37,11 @@ class _LogInPageState extends State<LogInPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Image.asset("assets/tamil-matrimony-logo.png",height: 70,),
-            Text("REGISTER FREE",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400,color: Colors.orange),)
+            InkWell(
+              onTap: (){
+                Navigator.pushReplacementNamed(context, AppRoutes.registerationscreen);
+              },
+                child: Text("REGISTER FREE",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400,color: Colors.orange),))
           ],
         ),
       ),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "196875595307",
+    "project_id": "rulr-matrimony",
+    "storage_bucket": "rulr-matrimony.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196875595307:android:5101792b89db8b0c9b446e",
+        "android_client_info": {
+          "package_name": "com.example.matrimony_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnAF3Fm7SlwwsvqMVatfOud5m36Zd4UIw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,8 +2,10 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 import '../../helper/Utilities.dart';
+import '../../widget/customtext.dart';
 import '../bloc/SignUpBloc/sign_up_bloc.dart';
 
 
@@ -16,9 +18,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   late SignUpBloc bloc ;
-  String? _selectedValue;
-  String? _selectedReligion;
-  String? _selectedLanguage;
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -80,7 +80,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   hint: Text('Select an Option',style: TextStyle(color: Colors.black54)),
-                  value: _selectedValue,
+                  value: bloc.selectedValue,
                   items: Utilities.CreatedForOptions.map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -89,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
-                      _selectedValue = newValue;
+                      bloc.selectedValue = newValue!;
                     });
                   },
                 ),
@@ -168,7 +168,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   hint: Text('Select an Option',style: TextStyle(color: Colors.black54)),
-                  value: _selectedReligion,
+                  value: bloc.selectedReligion,
                   items: Utilities.ReligionOptions.map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -177,7 +177,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
-                      _selectedReligion = newValue;
+                      bloc.selectedReligion = newValue!;
                     });
                   },
                 ),
@@ -199,7 +199,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   hint: Text('Select an Option',style: TextStyle(color: Colors.black54)),
-                  value: _selectedLanguage,
+                  value: bloc.selectedLanguage,
                   items: Utilities.LanguageOptions.map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -208,7 +208,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
-                      _selectedLanguage = newValue;
+                      bloc.selectedLanguage = newValue!;
                     });
                   },
                 ),
@@ -274,6 +274,61 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
               ),
               SizedBox(height: 10,),
+              Text("MARITAL STATUS"),
+              SizedBox(height: 10,),
+              SizedBox(
+                child: DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 2), // Border color and width
+                      borderRadius: BorderRadius.circular(8), // Optional: Rounded corners
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 2), // Border when focused
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  hint: Text('Select an Option',style: TextStyle(color: Colors.black54)),
+                  value: bloc.selectedMarStatus,
+                  items: Utilities.MaritalOptions.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value,style: TextStyle(color: Colors.black54),),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      bloc.selectedMarStatus = newValue!;
+                    });
+                  },
+                ),
+              ),
+              SizedBox(height: 20,),
+              Row(
+                children: [
+                  CustomText(
+                    text: "Willng to marry from other \ncommunities?",
+                  ),
+                  Spacer(),
+                  ToggleSwitch(
+                    activeFgColor: Colors.white,
+                    activeBgColor: [Colors.orange],
+                    initialLabelIndex: 0,
+                    totalSwitches: 2,
+                    labels: [
+                      'Yes',
+                      'No',
+                    ],
+                    onToggle: (index) {
+                      bloc.selectedMarrydiffComm = index==0? "Yes":"No";
+                    },
+                  ),
+                ],
+              ),
+              CustomText(
+                text: "Groom's Current Location",
+              ),
               Center(
                 child: Container(
                   width: 150,
@@ -287,7 +342,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                       },
                       child: Center(
-                          child: Text("REGISTER FREE",style: TextStyle(color: Colors.white,fontSize: 15),))),
+                          child: Text("REGISTER FREE",style:TextStyle(color: Colors.white,fontSize: 15),))),
                 ),
               ),
             ],
