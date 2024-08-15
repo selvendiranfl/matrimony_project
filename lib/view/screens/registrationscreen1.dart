@@ -222,6 +222,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Text("NUMBER"),
               SizedBox(height: 10,),
               TextFormField(
+                controller: bloc.phoneNumber,
                 decoration: InputDecoration(
                   prefixIcon: CountryCodePicker(
                     onChanged: (value){
