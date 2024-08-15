@@ -5,8 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 import '../../helper/Utilities.dart';
+import '../../router.dart';
 import '../../widget/customtext.dart';
-import '../bloc/SignUpBloc/sign_up_bloc.dart';
+import '../bloc/resgitrationscreen1/registration_screen1_bloc.dart';
 
 
 class SignUpScreen extends StatefulWidget {
@@ -41,6 +42,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return BlocListener<SignUpBloc, SignUpState>(
   listener: (context, state) {
+    if(state is SignUpSuccessState){
+      Navigator.pushNamed(context, AppRoutes.registerationscreen2);
+    }
     // TODO: implement listener
   },
   child: BlocBuilder<SignUpBloc, SignUpState>(
@@ -80,7 +84,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   hint: Text('Select an Option',style: TextStyle(color: Colors.black54)),
-                  value: bloc.selectedValue,
+                  value: bloc.selectedCreatedFor,
                   items: Utilities.CreatedForOptions.map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -89,7 +93,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
-                      bloc.selectedValue = newValue!;
+                      bloc.selectedCreatedFor = newValue!;
                     });
                   },
                 ),
@@ -98,8 +102,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Text("NAME"),
               SizedBox(height: 10,),
               TextFormField(
+                controller: bloc.userName,
                 decoration: InputDecoration(
-                    hintText: "Mobile No./ E-Mail ID",
+                    hintText: "Enter your name",
                     border: OutlineInputBorder(
                         borderSide: BorderSide(
                             color: Colors.grey
@@ -214,13 +219,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               SizedBox(height: 10,),
-              Text("COUNTRY CODE"),
+              Text("NUMBER"),
               SizedBox(height: 10,),
               TextFormField(
                 decoration: InputDecoration(
                   prefixIcon: CountryCodePicker(
                     onChanged: (value){
-                      
+                      bloc.countryCode = value.toString();
                     },
                     initialSelection: 'In',
                     
@@ -237,6 +242,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Text("EMAIL"),
               SizedBox(height: 10,),
               TextFormField(
+                controller: bloc.Email,
                 decoration: InputDecoration(
                     hintText: "E-Mail ID",
                     border: OutlineInputBorder(
@@ -251,6 +257,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(height: 10,),
               TextFormField(
                 obscureText: !bloc.showPassword,
+                controller: bloc.passWord,
                 decoration: InputDecoration(
                     hintText: "Password",
                     suffixIcon: InkWell(
@@ -274,61 +281,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
               ),
               SizedBox(height: 10,),
-              Text("MARITAL STATUS"),
-              SizedBox(height: 10,),
-              SizedBox(
-                child: DropdownButtonFormField<String>(
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey, width: 2), // Border color and width
-                      borderRadius: BorderRadius.circular(8), // Optional: Rounded corners
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey, width: 2), // Border when focused
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  hint: Text('Select an Option',style: TextStyle(color: Colors.black54)),
-                  value: bloc.selectedMarStatus,
-                  items: Utilities.MaritalOptions.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value,style: TextStyle(color: Colors.black54),),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      bloc.selectedMarStatus = newValue!;
-                    });
-                  },
-                ),
-              ),
-              SizedBox(height: 20,),
-              Row(
-                children: [
-                  CustomText(
-                    text: "Willng to marry from other \ncommunities?",
-                  ),
-                  Spacer(),
-                  ToggleSwitch(
-                    activeFgColor: Colors.white,
-                    activeBgColor: [Colors.orange],
-                    initialLabelIndex: 0,
-                    totalSwitches: 2,
-                    labels: [
-                      'Yes',
-                      'No',
-                    ],
-                    onToggle: (index) {
-                      bloc.selectedMarrydiffComm = index==0? "Yes":"No";
-                    },
-                  ),
-                ],
-              ),
-              CustomText(
-                text: "Groom's Current Location",
-              ),
               Center(
                 child: Container(
                   width: 150,
@@ -339,6 +291,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   child: InkWell(
                       onTap: (){
+                        Utilities.profileUser.name = bloc.userName.text.trim();
+                        Utilities.profileUser.createdFor = bloc.selectedCreatedFor.toString();
+                        Utilities.profileUser.gender = bloc.selectedGender;
+                        Utilities.profileUser.dob = DateFormat('yyyy-MM-dd').format(bloc.selectedDate);
+                        Utilities.profileUser.religion = bloc.selectedReligion;
+                        Utilities.profileUser.motherTongue = bloc.selectedLanguage;
+                        Utilities.profileUser.number = bloc.phoneNumber.text.trim();
+                        Utilities.profileUser.mailId = bloc.Email.text.trim();
+                        Utilities.profileUser.password = bloc.passWord.text.trim();
+
+                        print("touch1");
+                        bloc.add(SignUpwithidandPassEvent());
 
                       },
                       child: Center(

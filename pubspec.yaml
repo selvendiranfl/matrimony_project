@@ -40,6 +40,11 @@ dependencies:
   country_code_picker: ^3.0.0
   firebase_core: ^2.27.0
   toggle_switch: ^2.3.0
+  currency_picker: ^2.0.21
+  cloud_firestore: any
+  country_state_picker: ^0.0.5
+  csc_picker: ^0.2.7
+  firebase_auth: any
 
 dev_dependencies:
   flutter_test:

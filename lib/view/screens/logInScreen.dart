@@ -39,7 +39,7 @@ class _LogInPageState extends State<LogInPage> {
             Image.asset("assets/tamil-matrimony-logo.png",height: 70,),
             InkWell(
               onTap: (){
-                Navigator.pushReplacementNamed(context, AppRoutes.registerationscreen);
+                Navigator.pushReplacementNamed(context, AppRoutes.registerationscreen1);
               },
                 child: Text("REGISTER FREE",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400,color: Colors.orange),))
           ],
