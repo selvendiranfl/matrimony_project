@@ -26,7 +26,9 @@ class _LogInPageState extends State<LogInPage> {
   Widget build(BuildContext context) {
     return BlocListener<LogInBloc, LogInState>(
   listener: (context, state) {
-    // TODO: implement listener
+    if(state is LogInSuccesState){
+      Navigator.pushReplacementNamed(context, AppRoutes.HomeScreen);
+    }
   },
   child: BlocBuilder<LogInBloc, LogInState>(
   builder: (context, state) {
@@ -57,6 +59,7 @@ class _LogInPageState extends State<LogInPage> {
                 Center(child: Text("LOGIN",style: TextStyle(fontSize: 25),)),
                 SizedBox(height: 30,),
                 TextFormField(
+                  controller: bloc.mailId,
                   decoration: InputDecoration(
                     hintText: "Mobile No./ E-Mail ID",
                    hintStyle: TextStyle(color: Colors.grey),
@@ -76,7 +79,8 @@ class _LogInPageState extends State<LogInPage> {
                 ),
                 SizedBox(height: 30,),
                 TextFormField(
-                  obscureText: !showPassword,
+                  controller: bloc.password,
+                  obscureText: !bloc.showPassword,
                   decoration: InputDecoration(
                       hintText: "Password",
                       hintStyle: TextStyle(color: Colors.grey),
@@ -84,7 +88,7 @@ class _LogInPageState extends State<LogInPage> {
                         onTap: (){
                           bloc.add(PasswordHideEvent());
                         },
-                          child: showPassword ? Icon(Icons.visibility) : Icon(Icons.visibility_off)
+                          child: bloc.showPassword ? Icon(Icons.visibility) : Icon(Icons.visibility_off)
                       ),
                       border: OutlineInputBorder(
                           borderSide: BorderSide(
@@ -140,7 +144,7 @@ class _LogInPageState extends State<LogInPage> {
                     ),
                     child: InkWell(
                         onTap: (){
-                    
+                    Navigator.pushNamed(context, AppRoutes.registerationscreen1);
                         },
                         child: Center(
                             child: Text("Not a member? Register FREE",style: TextStyle(color: Colors.grey,fontSize: 15),))),

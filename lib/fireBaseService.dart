@@ -53,15 +53,15 @@ class FireBaseService{
     }
   }
 
-  Future<void> saveUserProfile(ProfileModel profile) async {
+  Future<String> saveUserProfile(ProfileModel profile) async {
     try {
       await FirebaseFirestore.instance
           .collection('profiles')
           .doc(profile.mailId) // Using mailId as the document ID
           .set(profile.toJson());
-      print("Profile saved successfully!");
+      return "Success";
     } catch (e) {
-      print("Failed to save profile: $e");
+      return ("Failed to save profile: $e");
     }
   }
 

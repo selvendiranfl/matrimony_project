@@ -2,10 +2,13 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:matrimony_app/view/bloc/homescreen/homescreenbloc_bloc.dart';
 import 'package:matrimony_app/view/bloc/loginBloc/log_in_bloc.dart';
+import 'package:matrimony_app/view/bloc/matchesscreen/matchesscreen_bloc.dart';
 import 'package:matrimony_app/view/bloc/regirationscreen2/registrationscreen2_bloc.dart';
 import 'package:matrimony_app/view/bloc/registrationscreen3/registrationscreen3_bloc.dart';
 import 'package:matrimony_app/view/bloc/resgitrationscreen1/registration_screen1_bloc.dart';
+import 'package:matrimony_app/view/screens/HomeScreen.dart';
 import 'package:matrimony_app/view/screens/logInScreen.dart';
 import 'package:matrimony_app/view/screens/registrationscreen2.dart';
 import 'package:matrimony_app/view/screens/regitrationscreen3.dart';
@@ -18,6 +21,7 @@ static const String loginscreen = "Login";
 static const String registerationscreen1 = "Registerationscreen1";
 static const String registerationscreen2 = "Registerationscreen2";
 static const String registerationscreen3 = "Registerationscreen3";
+static const String HomeScreen = "HomeScreen";
 }
 
 
@@ -33,6 +37,9 @@ Route<dynamic> _buildRegisterationScreen2(RouteSettings settings) {
 Route<dynamic> _buildRegisterationScreen3(RouteSettings settings) {
   return CustomPageRoute(child: PageBuilder.buildRegisterationScreen3(settings));
 }
+Route<dynamic> _buildHomeScreen(RouteSettings settings) {
+  return CustomPageRoute(child: PageBuilder.buildHomeScreen(settings));
+}
 
 Route<dynamic>? getRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -44,6 +51,8 @@ Route<dynamic>? getRoute(RouteSettings settings) {
       return _buildRegisterationScreen2(settings);
     case AppRoutes.registerationscreen3:
       return _buildRegisterationScreen3(settings);
+    case AppRoutes.HomeScreen:
+      return _buildHomeScreen(settings);
 
   }
   return null;
@@ -74,5 +83,14 @@ class PageBuilder {
       create: (BuildContext context) => Registrationscreen3Bloc(),
       child: Registrationscreen3(),
     );
+  }
+  static Widget buildHomeScreen(RouteSettings settings) {
+    return MultiBlocProvider(
+
+        providers: [
+          BlocProvider(create: (BuildContext context)=>HomescreenblocBloc()),
+          BlocProvider(create: (BuildContext context)=>MatchesscreenBloc()),
+        ],
+        child: HomeScreen());
   }
 }

@@ -27,7 +27,12 @@ class Registrationscreen3Bloc extends Bloc<Registrationscreen3Event, Registratio
     on<Registrationscreen3Event>((event, emit) async{
       if(event is RegistrationEvent){
 
-            await firebaseservice.saveUserProfile(Utilities.profileUser);
+          String result =  await firebaseservice.saveUserProfile(Utilities.profileUser);
+          if(result == "Success"){
+            emit(RegistrationsuccessState());
+          }else{
+            emit(RegistrationFailedState());
+          }
             print("User signed up and profile saved successfully!");
 
 

@@ -5,6 +5,7 @@ import 'package:matrimony_app/helper/size_config.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 import '../../helper/Utilities.dart';
+import '../../router.dart';
 import '../../widget/customtext.dart';
 import '../../widget/customtextfield.dart';
 import '../../widget/customtextfieldNum.dart';
@@ -45,7 +46,13 @@ class _Registrationscreen3State extends State<Registrationscreen3> {
           ),
           title: Text("REGISTRATION"),
         ),
-        body: BlocBuilder<Registrationscreen3Bloc, Registrationscreen3State>(
+        body: BlocListener<Registrationscreen3Bloc, Registrationscreen3State>(
+          listener: (context, state) {
+            if(state is RegistrationsuccessState){
+              Navigator.pushNamed(context, AppRoutes.registerationscreen2);
+            }
+        },
+        child: BlocBuilder<Registrationscreen3Bloc, Registrationscreen3State>(
           builder: (context, state) {
             return SingleChildScrollView(
               child: Padding(
@@ -407,7 +414,9 @@ class _Registrationscreen3State extends State<Registrationscreen3> {
             );
           },
         ),
+),
       ),
     );
   }
 }
+

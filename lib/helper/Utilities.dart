@@ -2,6 +2,8 @@
 
 
 
+import 'package:flutter/cupertino.dart';
+
 import '../model/userprofilemodel.dart';
 
 const double small_text= 0.035;
