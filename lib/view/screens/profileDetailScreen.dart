@@ -6,10 +6,18 @@ import 'package:matrimony_app/widget/customtext.dart';
 import '../../helper/Colors.dart';
 import '../../helper/Utilities.dart';
 import '../../helper/size_config.dart';
+import '../../model/userprofilemodel.dart';
 import '../bloc/profileDetailScreenBloc/profile_detail_screen_bloc.dart';
 
 class ProfileDetailScreen extends StatefulWidget {
-  const ProfileDetailScreen({super.key});
+  final ProfileModel profile;
+  int index;
+
+  ProfileDetailScreen({
+    Key? key,
+    required this.profile,
+    required this.index,
+  }) : super(key: key);
 
   @override
   State<ProfileDetailScreen> createState() => _ProfileDetailScreenState();
@@ -28,7 +36,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
         return Scaffold(
           appBar: AppBar(
             title: CustomText(
-              text: "ALL MATCHES 1/7",
+              text: "ALL MATCHES ${widget.index}/${Utilities.AllProfilesList.length}",
               weight: FontWeight.bold,
             ),
           ),
@@ -130,7 +138,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(
-                          text: "Later",
+                          text: widget.profile.name,
                           weight: FontWeight.bold,
                           size: SizeConfig.screenHeight! * small_text,
                         ),
@@ -155,7 +163,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                             SmallIcon(Icons.person_outline_sharp),
                             SizedBox(width: SizeConfig.blockSizeHorizontal! *2,),
                             CustomText(
-                              text: "28 Yrs, 4'6",
+                              text: "28 Yrs, ${widget.profile.height}",
                             )
                           ],
                         ),
@@ -165,7 +173,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                             SmallIcon(Icons.app_registration),
                             SizedBox(width: SizeConfig.blockSizeHorizontal! *2,),
                             CustomText(
-                              text: "Dhanak",
+                              text: widget.profile.caste,
                             )
                           ],
                         ),
@@ -175,7 +183,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                             SmallIcon(Icons.shopping_bag_outlined),
                             SizedBox(width: SizeConfig.blockSizeHorizontal! *2,),
                             CustomText(
-                              text: "ME, Not Working",
+                              text: widget.profile.occupation,
                             )
                           ],
                         ),
@@ -185,7 +193,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                             SmallIcon(Icons.location_on_outlined),
                             SizedBox(width: SizeConfig.blockSizeHorizontal! *2,),
                             CustomText(
-                              text: "Kanpir, Uttar Pradesh",
+                              text: "${widget.profile.state}, ${widget.profile.state}",
                             )
                           ],
                         ),
@@ -199,13 +207,13 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(
-                          text: "About Nisha Katheria",
+                          text: "About ${widget.profile.name}",
                           weight: FontWeight.bold,
                           size: SizeConfig.screenWidth! * large_text_mid,
                         ),
                         SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
                         CustomText(
-                          text: "I am nisha katheria from kanpur mujhe ek achha \n Iadka chaiye jo sbki care kre mere liye loyal ho",
+                          text: widget.profile.aboutMyself,
                         ),
                       ],
                     ),
@@ -287,17 +295,17 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                           children: [
                             BasicDetail(Icons.person_outline_sharp,"Age","28 years"),
                             SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
-                            BasicDetail(Icons.personal_injury_outlined,"Physique","4'6 | Normal"),
+                            BasicDetail(Icons.personal_injury_outlined,"Physique","${widget.profile.height} | ${widget.profile.physicalStatus}"),
                             SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
-                            BasicDetail(Icons.wechat_sharp,"Spoken languages","Hindi"),
+                            BasicDetail(Icons.wechat_sharp,"Spoken languages","${widget.profile.motherTongue}"),
                             SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
                             BasicDetail(Icons.dinner_dining_sharp,"Eating Habits","Vegitarian"),
                             SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
-                            BasicDetail(Icons.edit_note_sharp,"Profile created by","Self"),
+                            BasicDetail(Icons.edit_note_sharp,"Profile created by","${widget.profile.createdFor}"),
                             SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
-                            BasicDetail(Icons.sync_lock_rounded,"Marital Status","Never Married"),
+                            BasicDetail(Icons.sync_lock_rounded,"Marital Status","${widget.profile.maritalStatus}"),
                             SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
-                            BasicDetail(Icons.location_on_outlined,"Live In","Kanpur, Uttar Pradesh"),
+                            BasicDetail(Icons.location_on_outlined,"Live In","${widget.profile.city}, ${widget.profile.state}"),
                             SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
                             BasicDetail(Icons.flag_outlined,"Citizen","Indian Citizen"),
                             SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
@@ -327,9 +335,9 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                         SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
                         Column(
                           children: [
-                            BasicDetail(Icons.temple_hindu_outlined,"Religion","Hindu"),
+                            BasicDetail(Icons.temple_hindu_outlined,"Religion","${widget.profile.religion}"),
                             SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
-                            BasicDetail(Icons.personal_injury_outlined,"Caste/ SubCaste","Dhanak"),
+                            BasicDetail(Icons.personal_injury_outlined,"Caste/ SubCaste","${widget.profile.caste}/${widget.profile.subCaste}"),
                             SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
                             ReigiousCheckWidget("Gothra",Icons.ten_mp_outlined,),
                             SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
@@ -497,10 +505,6 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                         ),
                         SizedBox(height: SizeConfig.blockSizeVertical! * 2,),
                         BasicPreferenceWidget("Preferred Groom's Age", "20-35 yrs", Icons.check_circle_outline),
-                        SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
-                        BasicPreferenceWidget("Preferred Height", "4'6-5'6 yrs", Icons.check_circle_outline),
-                        SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
-                        BasicPreferenceWidget("Preferred Height", "4'6-5'6 yrs", Icons.check_circle_outline),
                         SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
                         BasicPreferenceWidget("Preferred Height", "4'6-5'6 yrs", Icons.check_circle_outline),
                         SizedBox(height: SizeConfig.blockSizeVertical! * 1,),

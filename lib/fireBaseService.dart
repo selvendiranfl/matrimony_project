@@ -75,36 +75,48 @@ class FireBaseService{
       return ("Failed to save profile: $e");
     }
   }
-  Future<QuerySnapshot<Object?>?> getMaleProfiles() async {
-
+  Future<List<ProfileModel>> getMaleProfiles() async {
+    List<ProfileModel> profiles = [];
 
     try {
-      // Access the MaleProfile collection from Firestore
-      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('MaleProfile').get();
-      return snapshot;
+      // Access the FeMaleprofiles collection from Firestore
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('Maleprofiles').get();
+
+      // Iterate over the documents in the collection
+      for (var doc in snapshot.docs) {
+        // Convert each document to a ProfileModel object
+        ProfileModel profile = ProfileModel.fromJson(doc.data() as Map<String, dynamic>);
+        profiles.add(profile);
+      }
     } catch (e) {
       print('Error getting profiles: $e');
     }
 
-    return null;
+    return profiles;
   }
-  Future<QuerySnapshot<Object?>?> getFeMaleProfiles() async {
 
+  Future<List<ProfileModel>> getFeMaleProfiles() async {
+    List<ProfileModel> profiles = [];
 
     try {
-      // Access the MaleProfile collection from Firestore
-      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('FeMaleProfile').get();
-      return snapshot;
+      // Access the FeMaleprofiles collection from Firestore
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('FeMaleprofiles').get();
+
+      // Iterate over the documents in the collection
+      for (var doc in snapshot.docs) {
+        // Convert each document to a ProfileModel object
+        ProfileModel profile = ProfileModel.fromJson(doc.data() as Map<String, dynamic>);
+        profiles.add(profile);
+      }
     } catch (e) {
       print('Error getting profiles: $e');
     }
 
-    return null;
+    return profiles;
   }
-
 
   Future<ProfileModel?> getProfileByUiId(String uiid) async {
-    List<String> collections = ['MaleProfile', 'FeMaleProfile','profiles']; // Add more collections if needed
+    List<String> collections = ['Maleprofiles', 'FeMaleprofiles','profiles']; // Add more collections if needed
 
     try {
       for (String collection in collections) {

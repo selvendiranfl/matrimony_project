@@ -44,7 +44,7 @@ class LogInBloc extends Bloc<LogInEvent, LogInState> {
           emit(FetchUserProfileSuccessState());
         }else{
           emit(FetchUserProfileFailerState());
-          print("failed");
+          print("-----failed");
         }
 
       }

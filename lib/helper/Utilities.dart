@@ -18,6 +18,7 @@ const double tiny_text_mid= 0.028;
 class Utilities{
 
   static ProfileModel profileUser = ProfileModel();
+  static List<ProfileModel> AllProfilesList = [];
 
   static List<String> CreatedForOptions = ["select","Myself", "Son", "Daughter", "Brother"];
   static List<String> ReligionOptions = ["select","Hindu", "Muslim - Sha", "Muslim - Sunni", "Muslim - others","Christian","Sikh","Jain - Digambar",];

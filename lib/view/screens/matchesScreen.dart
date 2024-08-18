@@ -78,7 +78,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                           Row(
                             children: [
                               CustomText(
-                                text: "7 Matches based on your ",
+                                text: "${Utilities.AllProfilesList.length} Matches based on your ",
                                 weight: FontWeight.bold,
                               ),
                               CustomText(
@@ -133,13 +133,20 @@ class _MatchesScreenState extends State<MatchesScreen> {
                         children: [
                           Expanded(
                             child: ListView.builder(
-                                itemCount: 5,
+                                itemCount: Utilities.AllProfilesList.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return InkWell(
                                       onTap: (){
-                                        Navigator.pushNamed(context, AppRoutes.ProfileDetailScreen);
+                                        Navigator.pushNamed(
+                                            context,
+                                            AppRoutes.ProfileDetailScreen,
+                                          arguments: {
+                                            'profile': Utilities.AllProfilesList[index],
+                                            'index': index,
+                                          },
+                                        );
                                       },
-                                      child: ProfileWidget()
+                                      child: ProfileWidget(index)
                                   );
 
                                 }),
@@ -150,9 +157,13 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                 itemBuilder: (BuildContext context, int index) {
                                   return InkWell(
                                     onTap: (){
-                                      Navigator.pushNamed(context, AppRoutes.ProfileDetailScreen);
+                                      Navigator.pushNamed(context, AppRoutes.ProfileDetailScreen,
+                                        arguments: {
+                                          'profile': Utilities.AllProfilesList[index],
+                                          'index': index,
+                                        },);
                                     },
-                                      child: ProfileWidget()
+                                      child: ProfileWidget(index)
                                   );
 
                                 }),
@@ -171,7 +182,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
     );
   }
   
-  Widget ProfileWidget(){
+  Widget ProfileWidget(int index){
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Card(
@@ -250,7 +261,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
               ),
               SizedBox(height: SizeConfig.blockSizeVertical! * 2,),
               CustomText(
-                text: "Samiksha",
+                text: Utilities.AllProfilesList[index].name,
                 size: SizeConfig.screenWidth! * large_text_mid,
                 weight: FontWeight.w600,
               ),
@@ -278,23 +289,23 @@ class _MatchesScreenState extends State<MatchesScreen> {
                     text: "21 yrs",
                   ),
                   CustomText(
-                    text: "4'8",
+                    text: Utilities.AllProfilesList[index].height,
                   ),
 
                   CustomText(
-                    text: "Dhanak",
+                    text: Utilities.AllProfilesList[index].caste,
                   ),
 
                   CustomText(
-                    text: "B.Sc",
+                    text: Utilities.AllProfilesList[index].education,
                   ),
 
                   CustomText(
-                    text: "Not Working",
+                    text: Utilities.AllProfilesList[index].occupation,
                   ),
 
                   CustomText(
-                    text: "Begusari",
+                    text: Utilities.AllProfilesList[index].city,
                   ),
                 ],
               ),

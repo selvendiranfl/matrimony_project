@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:matrimony_app/router.dart';
 import 'package:matrimony_app/widget/customtext.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:image_picker/image_picker.dart';
@@ -164,7 +165,9 @@ class _HomePageState extends State<HomePage> {
                           labels: ['Regular', 'PRIME'],
                           radiusStyle: true,
                           onToggle: (index) {
-                            print('switched to: $index');
+                            if(index==1){
+                              Navigator.pushNamed(context, AppRoutes.PremiumScreen);
+                            }
                           },
                         ),
                       ),
