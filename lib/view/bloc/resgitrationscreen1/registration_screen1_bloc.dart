@@ -46,6 +46,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
             User? userCredential = await firebaseservice.signUpWithEmailAndPassword(email, password);
             if (userCredential != null && userCredential.uid.isNotEmpty) {
               print("Sign-up success: ${userCredential.uid}");
+              Utilities.UserUiId = userCredential.uid.toString();
+              print("Sign-up success2: ${Utilities.UserUiId}");
               // Continue with profile saving or navigation
             } else {
               print("Failed to sign up: UserCredential is null or UID is empty.");

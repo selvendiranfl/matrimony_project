@@ -21,13 +21,18 @@ class Registrationscreen3Bloc extends Bloc<Registrationscreen3Event, Registratio
   String education = "";
   String occupation = "";
   String familyValue = "";
+  String result= "";
 
   FireBaseService firebaseservice = FireBaseService();
   Registrationscreen3Bloc() : super(Registrationscreen3Initial()) {
     on<Registrationscreen3Event>((event, emit) async{
       if(event is RegistrationEvent){
+        if(Utilities.profileUser.gender == "Male"){
+           result =  await firebaseservice.saveMaleUserProfile(Utilities.profileUser);
+        }else{
+          result =  await firebaseservice.saveFeMaleUserProfile(Utilities.profileUser);
+        }
 
-          String result =  await firebaseservice.saveUserProfile(Utilities.profileUser);
           if(result == "Success"){
             emit(RegistrationsuccessState());
           }else{

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 import '../../../fireBaseService.dart';
+import '../../../helper/Utilities.dart';
 
 part 'log_in_event.dart';
 part 'log_in_state.dart';
@@ -27,10 +28,30 @@ class LogInBloc extends Bloc<LogInEvent, LogInState> {
 
         final response = await service.loginWithEmailAndPassword(mailId.text.trim(), password.text.trim());
        if(response != null){
+         Utilities.UserUiId = response.uid;
+         print(Utilities.UserUiId);
          emit(LogInSuccesState());
        }else
        print("failed");
       }
+      if(event is FetchUserDataEvent){
+        final response = await service.getProfileByUiId(Utilities.UserUiId);
+        if(response != null){
+         Utilities.profileUser = response;
+         print("-----"+Utilities.profileUser.name.toString());
+         print("-----"+Utilities.profileUser.gender.toString());
+          print(Utilities.UserUiId);
+          emit(FetchUserProfileSuccessState());
+        }else{
+          emit(FetchUserProfileFailerState());
+          print("failed");
+        }
+
+      }
+
+
+
+
     });
   }
 }

@@ -4,3 +4,5 @@ part of 'matchesscreen_bloc.dart';
 sealed class MatchesscreenState {}
 
 final class MatchesscreenInitial extends MatchesscreenState {}
+
+final class FetchProfileState extends MatchesscreenState {}

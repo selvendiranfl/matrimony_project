@@ -229,6 +229,7 @@ class _Registrationscreen2State extends State<Registrationscreen2> {
                                 Utilities.profileUser.countryLiving = bloc.countryValue.text.trim();
                                 Utilities.profileUser.state = bloc.stateValue.text.trim();
                                 Utilities.profileUser.city = bloc.cityValue.text.trim();
+                                Utilities.profileUser.UiId = Utilities.UserUiId;
 
                                 Navigator.pushNamed(context, AppRoutes.registerationscreen3);
                               }

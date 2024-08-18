@@ -25,7 +25,8 @@ class ProfileModel {
   String? familyValue;
   String? ancestralValues;
   String? aboutMyself;
-  String? createdFor;  // New field
+  String? createdFor;
+  String? UiId;// New field
 
   ProfileModel({
     this.name,
@@ -54,7 +55,8 @@ class ProfileModel {
     this.familyValue,
     this.aboutMyself,
     this.createdFor,
-    this.ancestralValues // New field
+    this.ancestralValues,
+    this.UiId,// New field
   });
 
   ProfileModel.fromJson(Map<String, dynamic> json) {
@@ -84,7 +86,8 @@ class ProfileModel {
     familyValue = json['family_value'];
     aboutMyself = json['about_myself'];
     createdFor = json['created_for'];
-    ancestralValues = json['ancestralValues'];// New field
+    ancestralValues = json['ancestralValues'];
+    UiId = json['UiId'];// New field
   }
 
   Map<String, dynamic> toJson() {
@@ -115,7 +118,8 @@ class ProfileModel {
     data['family_value'] = this.familyValue;
     data['about_myself'] = this.aboutMyself;
     data['created_for'] = this.createdFor;
-    data['ancestralValues'] = this.ancestralValues;// New field
+    data['ancestralValues'] = this.ancestralValues;
+    data['UiId'] = this.UiId;// New field
     return data;
   }
 }

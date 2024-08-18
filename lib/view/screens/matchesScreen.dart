@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matrimony_app/helper/Colors.dart';
+import 'package:matrimony_app/router.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 import '../../helper/Utilities.dart';
@@ -134,7 +135,12 @@ class _MatchesScreenState extends State<MatchesScreen> {
                             child: ListView.builder(
                                 itemCount: 5,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return ProfileWidget();
+                                  return InkWell(
+                                      onTap: (){
+                                        Navigator.pushNamed(context, AppRoutes.ProfileDetailScreen);
+                                      },
+                                      child: ProfileWidget()
+                                  );
 
                                 }),
                           ),
@@ -142,10 +148,16 @@ class _MatchesScreenState extends State<MatchesScreen> {
                             child: ListView.builder(
                                 itemCount: 8,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return ProfileWidget();
+                                  return InkWell(
+                                    onTap: (){
+                                      Navigator.pushNamed(context, AppRoutes.ProfileDetailScreen);
+                                    },
+                                      child: ProfileWidget()
+                                  );
 
                                 }),
                           )
+
                         ],
                       ),
                     ),

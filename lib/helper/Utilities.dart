@@ -30,5 +30,7 @@ class Utilities{
   static List<String> HeightList = ["5.1","5.2"];
   static List<String> EducationList = ["B.sc","BCA"];
   static List<String> occupationList = ["B.sc","BCA"];
+  static List<String> SomkingHabitList = ["Select","Occasionally","Regularly","Never"];
 
+  static String UserUiId = "";
 }

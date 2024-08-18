@@ -212,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                              crossAxisAlignment: CrossAxisAlignment.start,
                              children: [
                                CustomText(
-                                 text: "Vimal",
+                                 text: Utilities.profileUser.name,
                                  size: SizeConfig.screenWidth! * medium_text,
                                  weight: FontWeight.bold,
                                ),

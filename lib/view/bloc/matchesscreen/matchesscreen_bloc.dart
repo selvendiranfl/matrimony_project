@@ -7,7 +7,10 @@ part 'matchesscreen_state.dart';
 class MatchesscreenBloc extends Bloc<MatchesscreenEvent, MatchesscreenState> {
   MatchesscreenBloc() : super(MatchesscreenInitial()) {
     on<MatchesscreenEvent>((event, emit) {
-      // TODO: implement event handler
+      if(event is FetchMaleProfileEvent){
+
+
+      }
     });
   }
 }

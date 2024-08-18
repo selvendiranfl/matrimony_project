@@ -5,11 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matrimony_app/view/bloc/homescreen/homescreenbloc_bloc.dart';
 import 'package:matrimony_app/view/bloc/loginBloc/log_in_bloc.dart';
 import 'package:matrimony_app/view/bloc/matchesscreen/matchesscreen_bloc.dart';
+import 'package:matrimony_app/view/bloc/profileDetailScreenBloc/profile_detail_screen_bloc.dart';
 import 'package:matrimony_app/view/bloc/regirationscreen2/registrationscreen2_bloc.dart';
 import 'package:matrimony_app/view/bloc/registrationscreen3/registrationscreen3_bloc.dart';
 import 'package:matrimony_app/view/bloc/resgitrationscreen1/registration_screen1_bloc.dart';
 import 'package:matrimony_app/view/screens/HomeScreen.dart';
 import 'package:matrimony_app/view/screens/logInScreen.dart';
+import 'package:matrimony_app/view/screens/profileDetailScreen.dart';
 import 'package:matrimony_app/view/screens/registrationscreen2.dart';
 import 'package:matrimony_app/view/screens/regitrationscreen3.dart';
 import 'package:matrimony_app/view/screens/registrationscreen1.dart';
@@ -22,6 +24,7 @@ static const String registerationscreen1 = "Registerationscreen1";
 static const String registerationscreen2 = "Registerationscreen2";
 static const String registerationscreen3 = "Registerationscreen3";
 static const String HomeScreen = "HomeScreen";
+static const String ProfileDetailScreen = "ProfileDetailScreen";
 }
 
 
@@ -40,6 +43,9 @@ Route<dynamic> _buildRegisterationScreen3(RouteSettings settings) {
 Route<dynamic> _buildHomeScreen(RouteSettings settings) {
   return CustomPageRoute(child: PageBuilder.buildHomeScreen(settings));
 }
+Route<dynamic> _buildProfileDetailScreen(RouteSettings settings) {
+  return CustomPageRoute(child: PageBuilder.buildProfileDetailScreen(settings));
+}
 
 Route<dynamic>? getRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -53,6 +59,8 @@ Route<dynamic>? getRoute(RouteSettings settings) {
       return _buildRegisterationScreen3(settings);
     case AppRoutes.HomeScreen:
       return _buildHomeScreen(settings);
+    case AppRoutes.ProfileDetailScreen:
+      return _buildProfileDetailScreen(settings);
 
   }
   return null;
@@ -92,5 +100,11 @@ class PageBuilder {
           BlocProvider(create: (BuildContext context)=>MatchesscreenBloc()),
         ],
         child: HomeScreen());
+  }
+  static Widget buildProfileDetailScreen(RouteSettings settings) {
+    return BlocProvider(
+      create: (BuildContext context) => ProfileDetailScreenBloc(),
+      child: ProfileDetailScreen(),
+    );
   }
 }

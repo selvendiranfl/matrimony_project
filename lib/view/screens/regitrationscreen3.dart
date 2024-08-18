@@ -49,7 +49,7 @@ class _Registrationscreen3State extends State<Registrationscreen3> {
         body: BlocListener<Registrationscreen3Bloc, Registrationscreen3State>(
           listener: (context, state) {
             if(state is RegistrationsuccessState){
-              Navigator.pushNamed(context, AppRoutes.registerationscreen2);
+              Navigator.pushNamed(context, AppRoutes.HomeScreen);
             }
         },
         child: BlocBuilder<Registrationscreen3Bloc, Registrationscreen3State>(
