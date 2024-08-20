@@ -44,7 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return BlocListener<SignUpBloc, SignUpState>(
   listener: (context, state) {
     if(state is SignUpSuccessState){
-      Navigator.pushNamed(context, AppRoutes.registerationscreen2);
+      Navigator.pushReplacementNamed(context, AppRoutes.registerationscreen2);
     }
     // TODO: implement listener
   },

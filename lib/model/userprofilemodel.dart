@@ -26,7 +26,29 @@ class ProfileModel {
   String? ancestralValues;
   String? aboutMyself;
   String? createdFor;
-  String? UiId;// New field
+  String? UiId; // New field
+  String? bodyType;
+  String? profilePic;
+  String? eatingHabit;
+  String? drinking;
+  String? smoking;
+  String? gothra;
+  String? zodiac;
+  String? star;
+  String? raasi;
+  String? college;
+  String? occupationDetail;
+  String? organization;
+  String? fatherOccupation;
+  String? motherOccupation;
+  String? brothers;
+  String? brothersMarried;
+  String? sisters;
+  String? sistersMarried;
+  String? aboutMyFamily;
+  String? hobbiesInterests;
+  String? viewsOnEqualRelationship;
+  String? ancestralorigin;
 
   ProfileModel({
     this.name,
@@ -53,10 +75,32 @@ class ProfileModel {
     this.annualIncome,
     this.familyType,
     this.familyValue,
+    this.ancestralValues,
     this.aboutMyself,
     this.createdFor,
-    this.ancestralValues,
-    this.UiId,// New field
+    this.UiId, // New field
+    this.bodyType,
+    this.profilePic,
+    this.eatingHabit,
+    this.drinking,
+    this.smoking,
+    this.gothra,
+    this.zodiac,
+    this.star,
+    this.raasi,
+    this.college,
+    this.occupationDetail,
+    this.organization,
+    this.fatherOccupation,
+    this.motherOccupation,
+    this.brothers,
+    this.brothersMarried,
+    this.sisters,
+    this.sistersMarried,
+    this.aboutMyFamily,
+    this.hobbiesInterests,
+    this.viewsOnEqualRelationship,
+    this.ancestralorigin,
   });
 
   ProfileModel.fromJson(Map<String, dynamic> json) {
@@ -87,7 +131,29 @@ class ProfileModel {
     aboutMyself = json['about_myself'];
     createdFor = json['created_for'];
     ancestralValues = json['ancestralValues'];
-    UiId = json['UiId'];// New field
+    UiId = json['UiId']; // New field
+    bodyType = json['body_type'];
+    profilePic = json['profile_pic'];
+    eatingHabit = json['eating_habit'];
+    drinking = json['drinking'];
+    smoking = json['smoking'];
+    gothra = json['gothra'];
+    zodiac = json['zodiac'];
+    star = json['star'];
+    raasi = json['raasi'];
+    college = json['college'];
+    occupationDetail = json['occupation_detail'];
+    organization = json['organization'];
+    fatherOccupation = json['father_occupation'];
+    motherOccupation = json['mother_occupation'];
+    brothers = json['brothers'];
+    brothersMarried = json['brothers_married'];
+    sisters = json['sisters'];
+    sistersMarried = json['sisters_married'];
+    aboutMyFamily = json['about_my_family'];
+    hobbiesInterests = json['hobbies_interests'];
+    viewsOnEqualRelationship = json['views_on_equal_relationship'];
+    ancestralorigin = json['ancestralorigin'];
   }
 
   Map<String, dynamic> toJson() {
@@ -119,7 +185,29 @@ class ProfileModel {
     data['about_myself'] = this.aboutMyself;
     data['created_for'] = this.createdFor;
     data['ancestralValues'] = this.ancestralValues;
-    data['UiId'] = this.UiId;// New field
+    data['UiId'] = this.UiId; // New field
+    data['body_type'] = this.bodyType;
+    data['profile_pic'] = this.profilePic;
+    data['eating_habit'] = this.eatingHabit;
+    data['drinking'] = this.drinking;
+    data['smoking'] = this.smoking;
+    data['gothra'] = this.gothra;
+    data['zodiac'] = this.zodiac;
+    data['star'] = this.star;
+    data['raasi'] = this.raasi;
+    data['college'] = this.college;
+    data['occupation_detail'] = this.occupationDetail;
+    data['organization'] = this.organization;
+    data['father_occupation'] = this.fatherOccupation;
+    data['mother_occupation'] = this.motherOccupation;
+    data['brothers'] = this.brothers;
+    data['brothers_married'] = this.brothersMarried;
+    data['sisters'] = this.sisters;
+    data['ancestralorigin'] = this.ancestralorigin;
+    data['sisters_married'] = this.sistersMarried;
+    data['about_my_family'] = this.aboutMyFamily;
+    data['hobbies_interests'] = this.hobbiesInterests;
+    data['views_on_equal_relationship'] = this.viewsOnEqualRelationship;
     return data;
   }
 }

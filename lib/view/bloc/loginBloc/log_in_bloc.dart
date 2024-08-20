@@ -25,21 +25,29 @@ class LogInBloc extends Bloc<LogInEvent, LogInState> {
         emit(PasswordHiddenState());
       }
       if(event is LoginSummitEvent){
+        Utilities.showProgress();
 
         final response = await service.loginWithEmailAndPassword(mailId.text.trim(), password.text.trim());
-       if(response != null){
+        Utilities.dismissProgress();
+        if(response != null){
          Utilities.UserUiId = response.uid;
          print(Utilities.UserUiId);
          emit(LogInSuccesState());
        }else
        print("failed");
       }
+
+
       if(event is FetchUserDataEvent){
+        Utilities.showProgress();
         final response = await service.getProfileByUiId(Utilities.UserUiId);
+        Utilities.dismissProgress();
         if(response != null){
          Utilities.profileUser = response;
          print("-----"+Utilities.profileUser.name.toString());
          print("-----"+Utilities.profileUser.gender.toString());
+         print("----check---"+Utilities.profileUser.smoking.toString());
+
           print(Utilities.UserUiId);
           emit(FetchUserProfileSuccessState());
         }else{

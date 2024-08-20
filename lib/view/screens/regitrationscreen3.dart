@@ -49,7 +49,7 @@ class _Registrationscreen3State extends State<Registrationscreen3> {
         body: BlocListener<Registrationscreen3Bloc, Registrationscreen3State>(
           listener: (context, state) {
             if(state is RegistrationsuccessState){
-              Navigator.pushNamed(context, AppRoutes.HomeScreen);
+              Navigator.pushReplacementNamed(context, AppRoutes.HomeScreen);
             }
         },
         child: BlocBuilder<Registrationscreen3Bloc, Registrationscreen3State>(
@@ -253,7 +253,7 @@ class _Registrationscreen3State extends State<Registrationscreen3> {
                             ),
                             SizedBox(height: SizeConfig.blockSizeVertical! *1),
                             SizedBox(
-                              height: SizeConfig.blockSizeVertical! *5,
+                              height: SizeConfig.blockSizeVertical! *8,
                               width: SizeConfig.blockSizeHorizontal! *60, // Set your desired width here
                               child: CustomTextField(
                                 controller: bloc.annualIncome,

@@ -27,12 +27,13 @@ class Registrationscreen3Bloc extends Bloc<Registrationscreen3Event, Registratio
   Registrationscreen3Bloc() : super(Registrationscreen3Initial()) {
     on<Registrationscreen3Event>((event, emit) async{
       if(event is RegistrationEvent){
+        Utilities.showProgress();
         if(Utilities.profileUser.gender == "Male"){
            result =  await firebaseservice.saveMaleUserProfile(Utilities.profileUser);
         }else{
           result =  await firebaseservice.saveFeMaleUserProfile(Utilities.profileUser);
         }
-
+        Utilities.dismissProgress();
           if(result == "Success"){
             emit(RegistrationsuccessState());
           }else{

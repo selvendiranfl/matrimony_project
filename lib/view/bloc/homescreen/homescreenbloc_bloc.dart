@@ -26,7 +26,8 @@ class HomescreenblocBloc extends Bloc<HomescreenblocEvent, HomescreenblocState> 
               Utilities.AllProfilesList.addAll(result);
 
               for(int i=0;i<Utilities.AllProfilesList.length;i++){
-                print("----names---"+Utilities.AllProfilesList[0].name.toString());
+                print("----names---"+Utilities.AllProfilesList[i].name.toString());
+                print("----names---"+Utilities.AllProfilesList[i].brothersMarried.toString());
               }
             }
 

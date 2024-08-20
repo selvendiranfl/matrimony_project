@@ -11,6 +11,7 @@ import 'package:matrimony_app/view/bloc/loginBloc/log_in_bloc.dart';
 
 
 import 'allImports.dart';
+import 'helper/navigatorService.dart';
 
 
 void main() async{
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: NavigationService.navigatorKey,
       debugShowCheckedModeBanner: false,
       home: BlocProvider(
         create: (context) => LogInBloc(),

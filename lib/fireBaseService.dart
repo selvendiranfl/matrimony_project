@@ -32,6 +32,8 @@ class FireBaseService{
       return null;
     }
   }
+
+
   // void signUpUser(ProfileModel profile) async {
   //   try {
   //     // Attempt to sign up the user
@@ -67,7 +69,7 @@ class FireBaseService{
   Future<String> saveFeMaleUserProfile(ProfileModel profile) async {
     try {
       await FirebaseFirestore.instance
-          .collection('FeMaleprofiles')
+          .collection('profiles')
           .doc(profile.mailId) // Using mailId as the document ID
           .set(profile.toJson());
       return "Success";
@@ -80,7 +82,7 @@ class FireBaseService{
 
     try {
       // Access the FeMaleprofiles collection from Firestore
-      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('Maleprofiles').get();
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('profiles').get();
 
       // Iterate over the documents in the collection
       for (var doc in snapshot.docs) {
@@ -137,6 +139,28 @@ class FireBaseService{
 
     // If no profile is found in any collection, return null
     return null;
+  }
+  Future<void> saveHabitToFirebase(String uiid, String habit, String selectedHabit) async {
+    List<String> collections = ['Maleprofiles', 'FeMaleprofiles', 'profiles'];
+    try {
+      for (String collection in collections) {
+        // Query the documents where 'UiId' is equal to the given uiid
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection(collection)
+            .where('UiId', isEqualTo: uiid)
+            .get();
+
+        // Iterate through the documents and update each one
+        for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+          await doc.reference.update({
+            habit.toLowerCase(): selectedHabit,
+          });
+        }
+      }
+      print('Habit saved successfully');
+    } catch (e) {
+      print('Error saving habit: $e');
+    }
   }
 
 

@@ -35,6 +35,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         emit(PasswordHiddenSUState());
       }
       if (event is SignUpwithidandPassEvent) {
+        Utilities.showProgress();
         print("Starting sign-up process...");
 
         String? email = Utilities.profileUser.mailId;
@@ -44,10 +45,12 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         if (email != null && password != null) {
           try {
             User? userCredential = await firebaseservice.signUpWithEmailAndPassword(email, password);
+            Utilities.dismissProgress();
             if (userCredential != null && userCredential.uid.isNotEmpty) {
               print("Sign-up success: ${userCredential.uid}");
               Utilities.UserUiId = userCredential.uid.toString();
               print("Sign-up success2: ${Utilities.UserUiId}");
+              emit(SignUpSuccessState());
               // Continue with profile saving or navigation
             } else {
               print("Failed to sign up: UserCredential is null or UID is empty.");
@@ -59,7 +62,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         } else {
           print("Email or Password is null.");
         }
-        emit(SignUpSuccessState());
+
       }
 
     });

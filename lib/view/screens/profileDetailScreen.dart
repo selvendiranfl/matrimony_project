@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:matrimony_app/widget/customtext.dart';
+import 'package:matrimony_app/widget/customtextfield.dart';
 
 import '../../helper/Colors.dart';
 import '../../helper/Utilities.dart';
 import '../../helper/size_config.dart';
 import '../../model/userprofilemodel.dart';
+import '../../router.dart';
 import '../bloc/profileDetailScreenBloc/profile_detail_screen_bloc.dart';
 
 class ProfileDetailScreen extends StatefulWidget {
@@ -24,14 +26,24 @@ class ProfileDetailScreen extends StatefulWidget {
 }
 
 class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
+
+  late ProfileDetailScreenBloc bloc ;
+
   @override
   void initState() {
+    bloc = BlocProvider.of<ProfileDetailScreenBloc>(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileDetailScreenBloc, ProfileDetailScreenState>(
+    return BlocListener<ProfileDetailScreenBloc, ProfileDetailScreenState>(
+  listener: (context, state) {
+    if(state is DataAddedSuccessState){
+      Navigator.pop(context);
+    }
+  },
+  child: BlocBuilder<ProfileDetailScreenBloc, ProfileDetailScreenState>(
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -309,9 +321,9 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                             SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
                             BasicDetail(Icons.flag_outlined,"Citizen","Indian Citizen"),
                             SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
-                            HabitCheckWidget("Smoking",Icons.smoking_rooms),
+                            HabitCheckWidget("Smoking",Icons.smoking_rooms,Utilities.profileUser.smoking),
                             SizedBox(height: SizeConfig.blockSizeVertical! * 1,),
-                            HabitCheckWidget("Drinking",Icons.wine_bar_outlined),
+                            HabitCheckWidget("Drinking",Icons.wine_bar_outlined,Utilities.profileUser.drinking),
                           ],
                         ),
                       ],
@@ -394,14 +406,49 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                               color: Colors.grey,
                             ),
                             CustomText(
-                              text: "*****",
+                              text:Utilities.profileUser.ancestralorigin == null ? "*****": widget.profile.ancestralorigin.toString(),
                               weight: FontWeight.bold,
                               size: SizeConfig.screenWidth! * large_text_mid,
                             ),
-                            CustomText(
-                              text: "Add your Ancestral Origin",
-                              color: pro_primaryColor,
-                              size: SizeConfig.screenWidth! * medium_text,
+                            Visibility(
+                              visible: Utilities.profileUser.ancestralorigin == null ? true: false,
+                              child: InkWell(
+                                onTap: (){
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        backgroundColor: Colors.white,
+                                        title: CustomText(text:'Ancestral Origin',weight: FontWeight.bold,),
+                                        content: CustomTextField(
+                                          controller: bloc.AncestralController,
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: Text('Close'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text('Add'),
+                                            onPressed: () {
+                                              bloc.dataName = "ancestralOrigin";
+                                              bloc.AddingData = bloc.AncestralController.text.trim();
+                                              bloc.add(DataAddEvent());
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: CustomText(
+                                  text: "Add your Ancestral Origin",
+                                  color: pro_primaryColor,
+                                  size: SizeConfig.screenWidth! * medium_text,
+                                ),
+                              ),
                             )
                           ],
                         )
@@ -595,7 +642,8 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
           ),
         );
       },
-    );
+    ),
+);
   }
   Widget BasicPreferenceWidget(topic,content,IconData){
     return Row(
@@ -683,7 +731,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
 
   }
 
-  Widget HabitCheckWidget(habit,IconData){
+  Widget HabitCheckWidget(habit,IconData,checkHabit){
     return Row(
       children: [
         Container(
@@ -703,53 +751,59 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
               size: SizeConfig.screenWidth! * medium_text,
               color: Colors.grey,
             ),
-            InkWell(
-              onTap: (){
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      backgroundColor: Colors.white,
-                      title: CustomText(text:'${habit} Habit',weight: FontWeight.bold,),
-                      content: DropdownButtonFormField<String>(
-                        decoration: InputDecoration(
-                          labelText: 'Choose',
-                          border: OutlineInputBorder(),
-                        ),
-                        value: Utilities.SomkingHabitList[0],
-                        items: Utilities.SomkingHabitList.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (newValue) {
-
+          checkHabit == null ?
+          InkWell(
+            onTap: (){
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    backgroundColor: Colors.white,
+                    title: CustomText(text:'${habit} Habit',weight: FontWeight.bold,),
+                    content: DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        labelText: 'Choose',
+                        border: OutlineInputBorder(),
+                      ),
+                      value: Utilities.SomkingHabitList[0],
+                      items: Utilities.SomkingHabitList.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        bloc.dataName = habit;
+                        bloc.AddingData = newValue!;
+                      },
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text('Close'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
                         },
                       ),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text('Close'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        TextButton(
-                          child: Text('Add'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              child: CustomText(
-                text: "To view her ${habit} habits, add yours",
-                color: pro_primaryColor,
-              ),
-            )
+                      TextButton(
+                        child: Text('Add'),
+                        onPressed: () {
+                          bloc.add(DataAddEvent());
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: CustomText(
+              text: "To view her ${habit} habits, add yours",
+              color: pro_primaryColor,
+            ),
+          ) :
+          CustomText(
+            text:habit == "Smoking"? widget.profile.smoking == null ? "request for habit" : widget.profile.smoking : widget.profile.drinking== null ? "request for habit" : widget.profile.smoking ,
+            color: pro_primaryColor,
+          )
           ],
         ),
       ],
@@ -973,7 +1027,7 @@ class MembershipBenefits extends StatelessWidget {
           Center(
             child: ElevatedButton(
               onPressed: () {
-                // Handle Become a paid member action
+                Navigator.pushNamed(context, AppRoutes.PremiumScreen);
               },
               child: CustomText(text: 'Become a paid member',color: Colors.white,),
               style: ElevatedButton.styleFrom(
@@ -1076,7 +1130,7 @@ class DateOfBirth extends StatelessWidget {
           Center(
             child: ElevatedButton(
               onPressed: () {
-                // Handle Become a paid member action
+                Navigator.pushNamed(context, AppRoutes.PremiumScreen);
               },
               child: CustomText(text: 'Become a paid member',color: Colors.white,),
               style: ElevatedButton.styleFrom(

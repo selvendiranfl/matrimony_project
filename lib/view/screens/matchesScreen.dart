@@ -21,7 +21,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: DefaultTabController(
-        length: 3,
+        length: 2,
         child: Scaffold(
           body: BlocListener<MatchesscreenBloc, MatchesscreenState>(
             listener: (context, state) {
@@ -131,43 +131,39 @@ class _MatchesScreenState extends State<MatchesScreen> {
                     Expanded(
                       child: TabBarView(
                         children: [
-                          Expanded(
-                            child: ListView.builder(
-                                itemCount: Utilities.AllProfilesList.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return InkWell(
-                                      onTap: (){
-                                        Navigator.pushNamed(
-                                            context,
-                                            AppRoutes.ProfileDetailScreen,
-                                          arguments: {
-                                            'profile': Utilities.AllProfilesList[index],
-                                            'index': index,
-                                          },
-                                        );
-                                      },
-                                      child: ProfileWidget(index)
-                                  );
-
-                                }),
-                          ),
-                          Expanded(
-                            child: ListView.builder(
-                                itemCount: 8,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return InkWell(
+                          ListView.builder(
+                              itemCount: Utilities.AllProfilesList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return InkWell(
                                     onTap: (){
-                                      Navigator.pushNamed(context, AppRoutes.ProfileDetailScreen,
+                                      Navigator.pushNamed(
+                                          context,
+                                          AppRoutes.ProfileDetailScreen,
                                         arguments: {
                                           'profile': Utilities.AllProfilesList[index],
                                           'index': index,
-                                        },);
+                                        },
+                                      );
                                     },
-                                      child: ProfileWidget(index)
-                                  );
+                                    child: ProfileWidget(index)
+                                );
 
-                                }),
-                          )
+                              }),
+                          ListView.builder(
+                              itemCount: Utilities.AllProfilesList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return InkWell(
+                                  onTap: (){
+                                    Navigator.pushNamed(context, AppRoutes.ProfileDetailScreen,
+                                      arguments: {
+                                        'profile': Utilities.AllProfilesList[index],
+                                        'index': index,
+                                      },);
+                                  },
+                                    child: ProfileWidget(index)
+                                );
+
+                              })
 
                         ],
                       ),

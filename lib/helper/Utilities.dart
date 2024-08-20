@@ -3,8 +3,10 @@
 
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../model/userprofilemodel.dart';
+import 'navigatorService.dart';
 
 const double small_text= 0.035;
 const double medium_text= 0.04;
@@ -34,4 +36,57 @@ class Utilities{
   static List<String> SomkingHabitList = ["Select","Occasionally","Regularly","Never"];
 
   static String UserUiId = "";
+
+
+  static showProgress() {
+    showDialog(
+      barrierDismissible: false,
+      context: NavigationService.navigatorKey.currentContext!,
+      builder: (context) {
+        return WillPopScope(
+          onWillPop: () async {
+            return false;
+          },
+          child: AlertDialog(
+            insetPadding: const EdgeInsets.all(15.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            backgroundColor: Colors.transparent,
+            titlePadding: EdgeInsets.zero,
+            elevation: 0,
+            scrollable: true,
+            title: Center(
+              child: Container(
+                padding: const EdgeInsets.all(20.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 16.0),
+                    Text(
+                      'Loading...',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+
+  static dismissProgress() {
+    if (Navigator.canPop(NavigationService.navigatorKey.currentContext!)) {
+      Navigator.pop(NavigationService.navigatorKey.currentContext!);
+    }
+  }
 }
