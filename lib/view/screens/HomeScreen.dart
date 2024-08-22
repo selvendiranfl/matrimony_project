@@ -10,6 +10,7 @@ import '../../helper/Colors.dart';
 import '../../helper/Utilities.dart';
 import '../../helper/size_config.dart';
 import '../bloc/homescreen/homescreenbloc_bloc.dart';
+import 'MailBoxScreen.dart';
 import 'matchesScreen.dart';
 
 
@@ -24,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _pages = [
     HomePage(),
     MatchesScreen(),
-    //MailBoxPage(),
+    MailBoxScreen(),
   ];
 
   void _onItemTapped(int index) {

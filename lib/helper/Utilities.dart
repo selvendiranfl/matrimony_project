@@ -4,8 +4,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import '../model/userprofilemodel.dart';
+import 'Colors.dart';
 import 'navigatorService.dart';
 
 const double small_text= 0.035;
@@ -34,6 +35,7 @@ class Utilities{
   static List<String> EducationList = ["B.sc","BCA"];
   static List<String> occupationList = ["B.sc","BCA"];
   static List<String> SomkingHabitList = ["Select","Occasionally","Regularly","Never"];
+  static List<String> SortingOptions = ["Viewed you","Shortlisted by you", "Horoscope Match"];
 
   static String UserUiId = "";
 
@@ -82,7 +84,17 @@ class Utilities{
     );
   }
 
-
+  static showToast(String text) {
+    Fluttertoast.showToast(
+      msg: text,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: pro_secondaryColor,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
 
   static dismissProgress() {
     if (Navigator.canPop(NavigationService.navigatorKey.currentContext!)) {

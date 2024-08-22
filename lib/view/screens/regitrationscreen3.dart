@@ -51,6 +51,9 @@ class _Registrationscreen3State extends State<Registrationscreen3> {
             if(state is RegistrationsuccessState){
               Navigator.pushReplacementNamed(context, AppRoutes.HomeScreen);
             }
+            if(state is RegistrationFailedState){
+              Utilities.showToast("Registration failed");
+            }
         },
         child: BlocBuilder<Registrationscreen3Bloc, Registrationscreen3State>(
           builder: (context, state) {

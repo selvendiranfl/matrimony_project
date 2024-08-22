@@ -46,7 +46,7 @@ class LogInBloc extends Bloc<LogInEvent, LogInState> {
          Utilities.profileUser = response;
          print("-----"+Utilities.profileUser.name.toString());
          print("-----"+Utilities.profileUser.gender.toString());
-         print("----check---"+Utilities.profileUser.smoking.toString());
+         print("----check---"+Utilities.profileUser.favourites.toString());
 
           print(Utilities.UserUiId);
           emit(FetchUserProfileSuccessState());

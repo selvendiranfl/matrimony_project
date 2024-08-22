@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matrimony_app/view/bloc/homescreen/homescreenbloc_bloc.dart';
 import 'package:matrimony_app/view/bloc/loginBloc/log_in_bloc.dart';
+import 'package:matrimony_app/view/bloc/mailboxscreen/mailbox_bloc.dart';
 import 'package:matrimony_app/view/bloc/matchesscreen/matchesscreen_bloc.dart';
 import 'package:matrimony_app/view/bloc/profileDetailScreenBloc/profile_detail_screen_bloc.dart';
 import 'package:matrimony_app/view/bloc/regirationscreen2/registrationscreen2_bloc.dart';
@@ -115,9 +116,13 @@ class PageBuilder {
 
         providers: [
           BlocProvider(create: (BuildContext context) =>
-          HomescreenblocBloc()
-            ..add(FetchProfileEvent())),
-          BlocProvider(create: (BuildContext context) => MatchesscreenBloc()),
+          HomescreenblocBloc()..add(FetchProfileEvent())),
+          BlocProvider(create: (BuildContext context) => 
+              MatchesscreenBloc()..add(FetchSortDataEvent())
+          ),
+          BlocProvider(create: (BuildContext context) =>
+              MailboxBloc()
+          ),
         ],
         child: HomeScreen());
   }

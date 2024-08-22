@@ -17,6 +17,12 @@ class MatchesScreen extends StatefulWidget {
 }
 
 class _MatchesScreenState extends State<MatchesScreen> {
+  late MatchesscreenBloc bloc ;
+  @override
+  void initState() {
+    bloc = BlocProvider.of<MatchesscreenBloc>(context);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -25,7 +31,19 @@ class _MatchesScreenState extends State<MatchesScreen> {
         child: Scaffold(
           body: BlocListener<MatchesscreenBloc, MatchesscreenState>(
             listener: (context, state) {
-              // TODO: implement listener
+              if(state is ViewerAddStateSuccessState){
+                Navigator.pushNamed(context, AppRoutes.ProfileDetailScreen,
+                  arguments: {
+                    'profile': Utilities.AllProfilesList[bloc.SelectedProfileIndex],
+                    'index': bloc.SelectedProfileIndex,
+                  },);
+              }
+              if(state is ShortListAdded){
+                bloc.add(UpdateUserDataEvent());
+              }
+              if(state is UpdateUserDataState){
+                bloc.add(FetchSortDataEvent());
+              }
             },
             child: BlocBuilder<MatchesscreenBloc, MatchesscreenState>(
               builder: (context, state) {
@@ -66,104 +84,136 @@ class _MatchesScreenState extends State<MatchesScreen> {
                       unselectedLabelColor: Colors.black, // Unselected tab text color
                       indicatorColor: Colors.green, // Indicator color
                       tabs: [
-                        Tab(text: "All Matches",),
-                        Tab(text: "Mutual Matches",),
+                        Tab(child: CustomText(text: "All matches"),),
+                        Tab(
+                          child: DropdownButtonFormField<String>(
+                            value: Utilities.SortingOptions.first,
+                            items: Utilities.SortingOptions.map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Center(
+                                  child: CustomText(
+                                    text: value,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+
+                            onChanged: (String? newValue) {
+                              bloc.SortBy = newValue.toString();
+                              bloc.add(FetchSortDataEvent());
+                            },
+                          ),
+                        ),
                       ],
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 8,horizontal: 15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              CustomText(
-                                text: "${Utilities.AllProfilesList.length} Matches based on your ",
-                                weight: FontWeight.bold,
-                              ),
-                              CustomText(
-                                text: "partner preferences",
-                                weight: FontWeight.bold,
-                                color: pro_primaryColor,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Row(
-                                children: [
-                                  Checkbox(value: false, onChanged: (bool){}),
-                                  CustomText(
-                                    text: "show profiles I have not viewed",
-                                    size: SizeConfig.screenWidth! * small_text,
-                                    color: Colors.grey,
-                                  ),
-                                ],
-                              ),
-                              Spacer(),
-                              Container(
-                                padding: EdgeInsets.symmetric(vertical: 4,horizontal: 12),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(15)
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.tune,size: SizeConfig.blockSizeVertical! * 1.9,),
-                                    SizedBox(
-                                      width: SizeConfig.blockSizeHorizontal! * 1,
-                                    ),
-                                    CustomText(
-                                      text: "Filter",
-                                      size: SizeConfig.screenWidth! * small_text,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                             Spacer(),
-                              Icon(Icons.more_vert)
 
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
                     Expanded(
                       child: TabBarView(
                         children: [
+
+                          Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 5,horizontal: 15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        CustomText(
+                                          text: "${Utilities.AllProfilesList.length} Matches based on your ",
+                                          weight: FontWeight.bold,
+                                        ),
+                                        CustomText(
+                                          text: "partner preferences",
+                                          weight: FontWeight.bold,
+                                          color: pro_primaryColor,
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(value: false, onChanged: (bool){}),
+                                            CustomText(
+                                              text: "show profiles I have not viewed",
+                                              size: SizeConfig.screenWidth! * small_text,
+                                              color: Colors.grey,
+                                            ),
+                                          ],
+                                        ),
+                                        Spacer(),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(vertical: 4,horizontal: 12),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(color: Colors.grey),
+                                              borderRadius: BorderRadius.circular(15)
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.tune,size: SizeConfig.blockSizeVertical! * 1.9,),
+                                              SizedBox(
+                                                width: SizeConfig.blockSizeHorizontal! * 1,
+                                              ),
+                                              CustomText(
+                                                text: "Filter",
+                                                size: SizeConfig.screenWidth! * small_text,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Icon(Icons.more_vert)
+
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Utilities.AllProfilesList.length ==0 ?
+                              Center(
+                                child: CustomText(
+                                  text: "No Profiles Found",
+                                  weight: FontWeight.bold,
+                                  size: SizeConfig.screenWidth! * large_text_mid ,
+
+                                ),
+                              ) : Flexible(
+                                child: ListView.builder(
+                                    itemCount: Utilities.AllProfilesList.length,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return ProfileWidget(index);
+                                
+                                    }),
+                              ),
+                            ],
+                          ),
+                          bloc.SortingUserList.length==0 ?
+                              Center(
+                                child: CustomText(
+                                  text: "No Profiles Found",
+                                  weight: FontWeight.bold,
+                                  size: SizeConfig.screenWidth! * large_text_mid ,
+
+                                ),
+                              ) :
                           ListView.builder(
-                              itemCount: Utilities.AllProfilesList.length,
+                              itemCount: bloc.SortingUserList.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return InkWell(
                                     onTap: (){
-                                      Navigator.pushNamed(
-                                          context,
-                                          AppRoutes.ProfileDetailScreen,
+                                      Navigator.pushNamed(context, AppRoutes.ProfileDetailScreen,
                                         arguments: {
-                                          'profile': Utilities.AllProfilesList[index],
-                                          'index': index,
-                                        },
-                                      );
+                                          'profile': bloc.SortingUserList[bloc.SelectedProfileIndex],
+                                          'index': bloc.SelectedProfileIndex,
+                                        },);
                                     },
                                     child: ProfileWidget(index)
                                 );
 
                               }),
-                          ListView.builder(
-                              itemCount: Utilities.AllProfilesList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                  onTap: (){
-                                    Navigator.pushNamed(context, AppRoutes.ProfileDetailScreen,
-                                      arguments: {
-                                        'profile': Utilities.AllProfilesList[index],
-                                        'index': index,
-                                      },);
-                                  },
-                                    child: ProfileWidget(index)
-                                );
-
-                              })
 
                         ],
                       ),
@@ -202,10 +252,17 @@ class _MatchesScreenState extends State<MatchesScreen> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         // Rounded corners
-                        child: Image.network(
-                          'https://cdn2.vectorstock.com/i/1000x1000/54/41/young-and-elegant-woman-avatar-profile-vector-9685441.jpg',
-                          // Replace with profile picture URL
-                          fit: BoxFit.cover,
+                        child: InkWell(
+                          onTap: (){
+                            bloc.SelectedProfileId = Utilities.AllProfilesList[index].UiId!;
+                            bloc.SelectedProfileIndex = index;
+                            bloc.add(ViewerAddEvent());
+                          },
+                          child: Image.network(
+                            'https://cdn2.vectorstock.com/i/1000x1000/54/41/young-and-elegant-woman-avatar-profile-vector-9685441.jpg',
+                            // Replace with profile picture URL
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
@@ -213,25 +270,31 @@ class _MatchesScreenState extends State<MatchesScreen> {
                     Positioned(
                       top: 10,
                       right: 10,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 4),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(10)
-                        ),
+                      child: InkWell(
+                        onTap: (){
+                          bloc.SelectedfavId = Utilities.AllProfilesList[index].UiId!;
+                          bloc.add(FavDataEvent());
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 4),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(10)
+                          ),
 
-                        child: Row(
-                          children: [
-                            Icon(Icons.star_outline_rounded,color: Colors.grey,),
-                            CustomText(
-                              text: 'Shortlist',
-                              color: Colors.black,
-                              size: SizeConfig.screenWidth! * medium_text,
+                          child: Row(
+                            children: [
+                              Icon(Icons.star_outline_rounded,color: Utilities.profileUser.favourites!.contains(Utilities.AllProfilesList[index].UiId) ? Colors.yellow :  Colors.grey,),
+                              CustomText(
+                                text: Utilities.profileUser.favourites!.contains(Utilities.AllProfilesList[index].UiId) ? 'Shortlisted': "Shortlist",
+                                color: Colors.black,
+                                size: SizeConfig.screenWidth! * medium_text,
 
-                            ),
-                          ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -326,22 +389,28 @@ class _MatchesScreenState extends State<MatchesScreen> {
                       ],
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 5,horizontal: 20),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Colors.grey),
-                        color: pro_primaryColor
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.check,color: Colors.white,),
-                        CustomText(
-                          text: "Send Interested",
-                          size: SizeConfig.screenWidth! * medium_text,
-                          color: Colors.white,
-                        ),
-                      ],
+                  InkWell(
+                    onTap: (){
+                      bloc.SelectedRecieverId = Utilities.AllProfilesList[index].UiId!;
+                      bloc.add(ReqSendEvent());
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 5,horizontal: 20),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.grey),
+                          color: pro_primaryColor
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.check,color: Colors.white,),
+                          CustomText(
+                            text: Utilities.profileUser.requestsent!.contains(Utilities.AllProfilesList[index].UiId) ? "Request Sent" : "Sent Interested",
+                            size: SizeConfig.screenWidth! * medium_text,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 ],

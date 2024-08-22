@@ -110,21 +110,22 @@ class _LogInPageState extends State<LogInPage> {
                 ),
                 SizedBox(height: 30,),
                 Center(
-                  child: Container(
-                    width: 120,
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(25)
+                  child: InkWell(
+                    onTap: (){
+                      if (_formKey.currentState?.validate() ?? false) {
+                        bloc.add(LoginSummitEvent());
+                      }
+                    },
+                    child: Container(
+                      width: 120,
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.orange,
+                        borderRadius: BorderRadius.circular(25)
+                      ),
+                      child: Center(
+                          child: Text("LOGIN",style: TextStyle(color: Colors.white,fontSize: 15),)),
                     ),
-                    child: InkWell(
-                      onTap: (){
-                        if (_formKey.currentState?.validate() ?? false) {
-                          bloc.add(LoginSummitEvent());
-                        }
-                      },
-                        child: Center(
-                            child: Text("LOGIN",style: TextStyle(color: Colors.white,fontSize: 15),))),
                   ),
                 ),
                 SizedBox(height: 30,),
@@ -148,7 +149,7 @@ class _LogInPageState extends State<LogInPage> {
                     ),
                     child: InkWell(
                         onTap: (){
-                    Navigator.pushNamed(context, AppRoutes.registerationscreen1);
+                    Navigator.pushReplacementNamed(context, AppRoutes.registerationscreen1);
                         },
                         child: Center(
                             child: Text("Not a member? Register FREE",style: TextStyle(color: Colors.grey,fontSize: 15),))),

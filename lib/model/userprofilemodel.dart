@@ -49,6 +49,11 @@ class ProfileModel {
   String? hobbiesInterests;
   String? viewsOnEqualRelationship;
   String? ancestralorigin;
+  List<String>? favourites; // New field
+  List<String>? viewers;
+  List<String>? requests;// New field
+   List<String>? requestsent;// New field
+
 
   ProfileModel({
     this.name,
@@ -101,6 +106,10 @@ class ProfileModel {
     this.hobbiesInterests,
     this.viewsOnEqualRelationship,
     this.ancestralorigin,
+    this.favourites, // New field
+    this.viewers, // New field
+    this.requests,
+    this.requestsent,
   });
 
   ProfileModel.fromJson(Map<String, dynamic> json) {
@@ -149,11 +158,15 @@ class ProfileModel {
     brothers = json['brothers'];
     brothersMarried = json['brothers_married'];
     sisters = json['sisters'];
+    ancestralorigin = json['ancestralorigin'];
     sistersMarried = json['sisters_married'];
     aboutMyFamily = json['about_my_family'];
     hobbiesInterests = json['hobbies_interests'];
     viewsOnEqualRelationship = json['views_on_equal_relationship'];
-    ancestralorigin = json['ancestralorigin'];
+    favourites = List<String>.from(json['favourites'] ?? []); // New field
+    viewers = List<String>.from(json['viewers'] ?? []);
+    requests = List<String>.from(json['requests'] ?? []); // New field
+    requestsent = List<String>.from(json['requestsent'] ?? []); // New field
   }
 
   Map<String, dynamic> toJson() {
@@ -208,6 +221,10 @@ class ProfileModel {
     data['about_my_family'] = this.aboutMyFamily;
     data['hobbies_interests'] = this.hobbiesInterests;
     data['views_on_equal_relationship'] = this.viewsOnEqualRelationship;
+    data['favourites'] = this.favourites; // New field
+    data['viewers'] = this.viewers; // New field
+    data['requests'] = this.requests; // New field
+    data['requestsent'] = this.requestsent; // New field
     return data;
   }
 }

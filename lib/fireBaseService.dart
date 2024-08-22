@@ -129,7 +129,7 @@ class FireBaseService{
 
         if (snapshot.docs.isNotEmpty) {
           // If the profile is found, return the ProfileModel object
-          print("----emotyyy----");
+          print("----Not--emptyyy----");
           return ProfileModel.fromJson(snapshot.docs.first.data() as Map<String, dynamic>);
         }
       }
@@ -160,6 +160,169 @@ class FireBaseService{
       print('Habit saved successfully');
     } catch (e) {
       print('Error saving habit: $e');
+    }
+  }
+  Future<String> saveViewerData(String uiid, String viewer) async {
+    List<String> collections = ['Maleprofiles', 'FeMaleprofiles', 'profiles'];
+    try {
+      for (String collection in collections) {
+        // Query the documents where 'UiId' is equal to the given uiid
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection(collection)
+            .where('UiId', isEqualTo: uiid)
+            .get();
+        for (QueryDocumentSnapshot document in querySnapshot.docs) {
+          await FirebaseFirestore.instance
+              .collection(collection)
+              .doc(document.id)
+              .update({
+            'viewers': FieldValue.arrayUnion([viewer])
+          });
+        }
+        // Iterate through the documents and update each one
+        }
+      print('views saved successfully');
+      return "Success";
+    } catch (e) {
+      print('Error saving habit: $e');
+      return e.toString();
+    }
+  }
+  Future<String> savefavData(String uiid, String favId) async {
+    List<String> collections = ['Maleprofiles', 'FeMaleprofiles', 'profiles'];
+    try {
+      for (String collection in collections) {
+        // Query the documents where 'UiId' is equal to the given uiid
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection(collection)
+            .where('UiId', isEqualTo: uiid)
+            .get();
+        for (QueryDocumentSnapshot document in querySnapshot.docs) {
+          await FirebaseFirestore.instance
+              .collection(collection)
+              .doc(document.id)
+              .update({
+            'favourites': FieldValue.arrayUnion([favId])
+          });
+        }
+        // Iterate through the documents and update each one
+      }
+      print('Favourites saved successfully');
+      return "Success";
+    } catch (e) {
+      print('Error saving habit: $e');
+      return e.toString();
+    }
+  }
+
+  Future<String> removefavData(String uiid, String favId) async {
+    List<String> collections = ['Maleprofiles', 'FeMaleprofiles', 'profiles'];
+    try {
+      for (String collection in collections) {
+        // Query the documents where 'UiId' is equal to the given uiid
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection(collection)
+            .where('UiId', isEqualTo: uiid)
+            .get();
+        for (QueryDocumentSnapshot document in querySnapshot.docs) {
+          await FirebaseFirestore.instance
+              .collection(collection)
+              .doc(document.id)
+              .update({
+            'favourites': FieldValue.arrayRemove([favId])
+          });
+        }
+        // Iterate through the documents and update each one
+      }
+      print('Favourites removed successfully');
+      return "Success";
+    } catch (e) {
+      print('Error saving habit: $e');
+      return e.toString();
+    }
+  }
+  Future<String> SendInterestedReq(String SenderId, String RecieverId) async {
+    List<String> collections = ['Maleprofiles', 'FeMaleprofiles', 'profiles'];
+    try {
+      for (String collection in collections) {
+        // Query the documents where 'UiId' is equal to the given uiid
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection(collection)
+            .where('UiId', isEqualTo: RecieverId)
+            .get();
+        for (QueryDocumentSnapshot document in querySnapshot.docs) {
+          await FirebaseFirestore.instance
+              .collection(collection)
+              .doc(document.id)
+              .update({
+            'requests': FieldValue.arrayUnion([SenderId])
+          });
+        }
+        // Iterate through the documents and update each one
+      }
+      for (String collection in collections) {
+        // Query the documents where 'UiId' is equal to the given uiid
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection(collection)
+            .where('UiId', isEqualTo: SenderId)
+            .get();
+        for (QueryDocumentSnapshot document in querySnapshot.docs) {
+          await FirebaseFirestore.instance
+              .collection(collection)
+              .doc(document.id)
+              .update({
+            'requestsent': FieldValue.arrayUnion([RecieverId])
+          });
+        }
+        // Iterate through the documents and update each one
+      }
+      print('Requested successfully');
+      return "Success";
+    } catch (e) {
+      print('Error saving habit: $e');
+      return e.toString();
+    }
+  }
+  Future<String> UnSendInterestedReq(String SenderId, String RecieverId) async {
+    List<String> collections = ['Maleprofiles', 'FeMaleprofiles', 'profiles'];
+    try {
+      for (String collection in collections) {
+        // Query the documents where 'UiId' is equal to the given uiid
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection(collection)
+            .where('UiId', isEqualTo: RecieverId)
+            .get();
+        for (QueryDocumentSnapshot document in querySnapshot.docs) {
+          await FirebaseFirestore.instance
+              .collection(collection)
+              .doc(document.id)
+              .update({
+            'requests': FieldValue.arrayRemove([SenderId])
+          });
+        }
+        // Iterate through the documents and update each one
+      }
+      for (String collection in collections) {
+        // Query the documents where 'UiId' is equal to the given uiid
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection(collection)
+            .where('UiId', isEqualTo: SenderId)
+            .get();
+        for (QueryDocumentSnapshot document in querySnapshot.docs) {
+          await FirebaseFirestore.instance
+              .collection(collection)
+              .doc(document.id)
+              .update({
+            'requestsent': FieldValue.arrayRemove([RecieverId])
+          });
+        }
+        // Iterate through the documents and update each one
+      }
+      print('Requested successfully');
+      return "Success";
+    } catch (e) {
+      print('Error saving habit: $e');
+      return e.toString();
     }
   }
 
