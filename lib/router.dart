@@ -121,7 +121,7 @@ class PageBuilder {
               MatchesscreenBloc()..add(FetchSortDataEvent())
           ),
           BlocProvider(create: (BuildContext context) =>
-              MailboxBloc()
+              MailboxBloc()..add(FetchRequestDataEvent())
           ),
         ],
         child: HomeScreen());

@@ -38,7 +38,7 @@ class LogInBloc extends Bloc<LogInEvent, LogInState> {
       }
 
 
-      if(event is FetchUserDataEvent){
+      if(event is FetchUserDataLogInEvent){
         Utilities.showProgress();
         final response = await service.getProfileByUiId(Utilities.UserUiId);
         Utilities.dismissProgress();
@@ -49,9 +49,9 @@ class LogInBloc extends Bloc<LogInEvent, LogInState> {
          print("----check---"+Utilities.profileUser.favourites.toString());
 
           print(Utilities.UserUiId);
-          emit(FetchUserProfileSuccessState());
+          emit(FetchUserProfileSuccessLogInState());
         }else{
-          emit(FetchUserProfileFailerState());
+          emit(FetchUserProfileFailerLogInState());
           print("-----failed");
         }
 

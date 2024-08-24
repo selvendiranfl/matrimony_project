@@ -27,10 +27,10 @@ class _LogInPageState extends State<LogInPage> {
     return BlocListener<LogInBloc, LogInState>(
   listener: (context, state) {
     if(state is LogInSuccesState){
-      bloc.add(FetchUserDataEvent());
+      bloc.add(FetchUserDataLogInEvent());
 
     }
-    if(state is FetchUserProfileSuccessState){
+    if(state is FetchUserProfileSuccessLogInState){
       Navigator.pushReplacementNamed(context, AppRoutes.HomeScreen);
     }
   },

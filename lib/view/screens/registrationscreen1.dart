@@ -250,27 +250,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(height: 10,),
                 TextFormField(
                   controller: bloc.phoneNumber,
+                  keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Please fill your number";
+                    } else if (!RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+                      return "Please enter a valid 10-digit number";
                     }
+                    return null; // If input is valid, return null.
                   },
                   decoration: InputDecoration(
                     prefixIcon: CountryCodePicker(
-                      onChanged: (value){
+                      onChanged: (value) {
                         bloc.countryCode = value.toString();
                       },
-                      initialSelection: 'In',
-
+                      initialSelection: 'IN',
                     ),
-                      hintText: "NUMBER",
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.grey
-                          ),
-                          borderRadius: BorderRadius.circular(10)
-                      )
-                  ),),
+                    hintText: "NUMBER",
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
                 SizedBox(height: 10,),
                 Text("EMAIL"),
                 SizedBox(height: 10,),

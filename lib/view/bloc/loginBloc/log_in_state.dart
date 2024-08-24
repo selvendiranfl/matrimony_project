@@ -9,7 +9,7 @@ final class LogInInitial extends LogInState {}
 
 class LogInSuccesState extends LogInState {}
 
-class FetchUserProfileSuccessState extends LogInState {}
+class FetchUserProfileSuccessLogInState extends LogInState {}
 
-class FetchUserProfileFailerState extends LogInState {}
+class FetchUserProfileFailerLogInState extends LogInState {}
 

@@ -7,5 +7,5 @@ class PasswordHideEvent extends LogInEvent {}
 
 class LoginSummitEvent extends LogInEvent {}
 
-class FetchUserDataEvent extends LogInEvent {}
+class FetchUserDataLogInEvent extends LogInEvent {}
 

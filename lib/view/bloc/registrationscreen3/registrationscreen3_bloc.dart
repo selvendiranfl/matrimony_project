@@ -40,8 +40,24 @@ class Registrationscreen3Bloc extends Bloc<Registrationscreen3Event, Registratio
             emit(RegistrationFailedState());
           }
             print("User signed up and profile saved successfully!");
+      }
 
+      if(event is FetchUserDataEvent){
+        Utilities.showProgress();
+        final response = await firebaseservice.getProfileByUiId(Utilities.UserUiId);
+        Utilities.dismissProgress();
+        if(response != null){
+          Utilities.profileUser = response;
+          print("-----"+Utilities.profileUser.name.toString());
+          print("-----"+Utilities.profileUser.gender.toString());
+          print("----check---"+Utilities.profileUser.favourites.toString());
 
+          print(Utilities.UserUiId);
+          emit(FetchUserProfileSuccessState());
+        }else{
+          emit(FetchUserProfileFailerState());
+          print("-----failed");
+        }
 
       }
 

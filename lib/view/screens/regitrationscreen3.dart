@@ -49,10 +49,13 @@ class _Registrationscreen3State extends State<Registrationscreen3> {
         body: BlocListener<Registrationscreen3Bloc, Registrationscreen3State>(
           listener: (context, state) {
             if(state is RegistrationsuccessState){
-              Navigator.pushReplacementNamed(context, AppRoutes.HomeScreen);
+              bloc.add(FetchUserDataEvent());
             }
             if(state is RegistrationFailedState){
               Utilities.showToast("Registration failed");
+            }
+            if(state is FetchUserProfileSuccessState){
+              Navigator.pushReplacementNamed(context, AppRoutes.HomeScreen);
             }
         },
         child: BlocBuilder<Registrationscreen3Bloc, Registrationscreen3State>(
@@ -360,28 +363,18 @@ class _Registrationscreen3State extends State<Registrationscreen3> {
                       text: "ABOUT MYSELF",
                     ),
                     SizedBox(height: SizeConfig.blockSizeVertical! *2),
-                    SizedBox(
-                      height: 60,
-                      child: TextFormField(
-                        controller: bloc.aboutMyself,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.grey
-                                ),
-                                borderRadius: BorderRadius.circular(10)
-                            )
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
-                        maxLines: null, // Allows the text field to grow with content
-                        expands: true,  // Expands to fill the parent container's height
-                      ),
+                    CustomTextField(
+                      controller: bloc.aboutMyself,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter valid data';
+                        }
+                        return null;
+                      },
+                      maxLines: null,  // Allows the text field to grow with content
+                        // Expands to fill the parent container's height
                     ),
+
                     SizedBox(height: SizeConfig.blockSizeVertical! *2),
                     Center(
                       child: Container(

@@ -71,7 +71,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
                           labels: ['Regular', 'PRIME'],
                           radiusStyle: true,
                           onToggle: (index) {
-                            print('switched to: $index');
+                            if(index==1){
+                              Navigator.pushNamed(context, AppRoutes.PremiumScreen);
+                            }
                           },
                         ),
                       ),
@@ -405,7 +407,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                         children: [
                           Icon(Icons.check,color: Colors.white,),
                           CustomText(
-                            text: Utilities.profileUser.requestsent!.contains(Utilities.AllProfilesList[index].UiId) ? "Request Sent" : "Sent Interested",
+                            text: Utilities.profileUser.requestsent!.contains(Utilities.AllProfilesList[index].UiId) ? "Request Sent" : "Send Interested",
                             size: SizeConfig.screenWidth! * medium_text,
                             color: Colors.white,
                           ),
