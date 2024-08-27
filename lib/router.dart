@@ -116,7 +116,8 @@ class PageBuilder {
 
         providers: [
           BlocProvider(create: (BuildContext context) =>
-          HomescreenblocBloc()..add(FetchProfileEvent())),
+          HomescreenblocBloc()..add(FetchProfileEvent())
+          ),
           BlocProvider(create: (BuildContext context) => 
               MatchesscreenBloc()..add(FetchSortDataEvent())
           ),

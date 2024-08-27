@@ -19,14 +19,15 @@ class LogInBloc extends Bloc<LogInEvent, LogInState> {
 
   LogInBloc() : super(LogInInitial()) {
     on<LogInEvent>((event, emit) async {
+
       if(event is PasswordHideEvent){
         print("ttt");
         showPassword = !showPassword;
         emit(PasswordHiddenState());
       }
+
       if(event is LoginSummitEvent){
         Utilities.showProgress();
-
         final response = await service.loginWithEmailAndPassword(mailId.text.trim(), password.text.trim());
         Utilities.dismissProgress();
         if(response != null){
@@ -39,14 +40,25 @@ class LogInBloc extends Bloc<LogInEvent, LogInState> {
 
 
       if(event is FetchUserDataLogInEvent){
+
         Utilities.showProgress();
         final response = await service.getProfileByUiId(Utilities.UserUiId);
         Utilities.dismissProgress();
         if(response != null){
          Utilities.profileUser = response;
+         if(Utilities.profileUser.gender == "Male"){
+           Utilities.ProfileCollectionName = "FeMaleprofiles";
+           Utilities.SelfCollectionName = "Maleprofiles";
+         }else{
+           Utilities.ProfileCollectionName = "Maleprofiles";
+           Utilities.SelfCollectionName = "FeMaleprofiles";
+         }
+         print("-----"+Utilities.ProfileCollectionName.toString());
+         print("-----"+Utilities.SelfCollectionName.toString());
          print("-----"+Utilities.profileUser.name.toString());
          print("-----"+Utilities.profileUser.gender.toString());
          print("----check---"+Utilities.profileUser.favourites.toString());
+         print("------bloc check---${Utilities.profileUser.block}");
 
           print(Utilities.UserUiId);
           emit(FetchUserProfileSuccessLogInState());

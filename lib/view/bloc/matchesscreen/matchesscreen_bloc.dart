@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:matrimony_app/helper/Utilities.dart';
 import 'package:meta/meta.dart';
 
@@ -10,6 +11,9 @@ part 'matchesscreen_state.dart';
 
 class MatchesscreenBloc extends Bloc<MatchesscreenEvent, MatchesscreenState> {
 
+  TextEditingController reportController = new TextEditingController();
+  String ReportUserID = "";
+  String BlockingUserID = "";
   FireBaseService firebaseservice = FireBaseService();
   String SelectedProfileId="";
   String SelectedfavId="";
@@ -41,7 +45,9 @@ class MatchesscreenBloc extends Bloc<MatchesscreenEvent, MatchesscreenState> {
           print("adding");
         }
         Utilities.dismissProgress();
-        if(result == "Success"){
+        if(result != null){
+          Utilities.profileUser = result!;
+          print("----Fav---${Utilities.profileUser.favourites}");
           emit(ShortListAdded());
         }
       }
@@ -50,14 +56,16 @@ class MatchesscreenBloc extends Bloc<MatchesscreenEvent, MatchesscreenState> {
         final result;
         if(Utilities.profileUser.requestsent!.contains(SelectedRecieverId)){
           print("----Unsend Req--------");
-          result = await firebaseservice.UnSendInterestedReq(Utilities.UserUiId, SelectedRecieverId);
+          result = await firebaseservice.unSendInterestedReq(Utilities.UserUiId, SelectedRecieverId);
 
         }else{
-          result = await firebaseservice.SendInterestedReq(Utilities.UserUiId, SelectedRecieverId );
+          result = await firebaseservice.sendInterestedReq(Utilities.UserUiId, SelectedRecieverId );
           print("--------Send Req-------");
         }
         Utilities.dismissProgress();
-        if(result == "Success"){
+        if(result != null){
+          Utilities.profileUser = result!;
+          print("----Fav---${Utilities.profileUser.requestsent}");
           emit(ShortListAdded());
         }
       }
@@ -73,7 +81,7 @@ class MatchesscreenBloc extends Bloc<MatchesscreenEvent, MatchesscreenState> {
             if(response != null){
               SortingUserList.add(response!);
             }
-            print(SortingUserList[i].name);
+            //print(SortingUserList[i].name);
           }
         }else if(SortBy == "Shortlisted by you"){
           print("---Shortlisted by you-----");
@@ -89,25 +97,34 @@ class MatchesscreenBloc extends Bloc<MatchesscreenEvent, MatchesscreenState> {
         emit(SortListuserGettingState());
       }
 
-      if(event is UpdateUserDataEvent){
-        Utilities.showProgress();
-        final response = await firebaseservice.getProfileByUiId(Utilities.UserUiId);
-        Utilities.dismissProgress();
-        if(response != null){
-          Utilities.profileUser = response;
-          print("-----"+Utilities.profileUser.name.toString());
-          print("-----"+Utilities.profileUser.gender.toString());
-          print("----check---"+Utilities.profileUser.favourites.toString());
 
-          print(Utilities.UserUiId);
-          emit(UpdateUserDataState());
+
+      if(event is ReportUserEvent){
+        Utilities.showProgress();
+        final result = await firebaseservice.submitReport(Utilities.UserUiId, ReportUserID, reportController.text.trim());
+        Utilities.dismissProgress();
+        if(result == "Success"){
+          Utilities.showToast("Report Saved");
         }else{
-          emit(UpdateUserDataFailedState());
-          print("-----failed");
+          Utilities.showToast("Report failed");
+        }
+      }
+      if(event is BlockUserEvent){
+
+        Utilities.showProgress();
+        final result = await firebaseservice.addBlockUser(Utilities.UserUiId, BlockingUserID);
+        Utilities.dismissProgress();
+
+        if(result != null){
+          print("------block check---${result!.block}");
+          Utilities.profileUser = result!;
+          print("------bloc check---${Utilities.profileUser.block}");
+          Utilities.showToast("Blocked");
+        }else{
+          Utilities.showToast("Blocking failed");
         }
 
       }
-
 
 
 

@@ -49,6 +49,7 @@ class ProfileModel {
   String? hobbiesInterests;
   String? viewsOnEqualRelationship;
   String? ancestralorigin;
+  List<String>? block;
   List<String>? favourites; // New field
   List<String>? viewers;
   List<String>? requests;// New field
@@ -110,6 +111,7 @@ class ProfileModel {
     this.viewers, // New field
     this.requests,
     this.requestsent,
+    this.block
   });
 
   ProfileModel.fromJson(Map<String, dynamic> json) {
@@ -162,6 +164,7 @@ class ProfileModel {
     sistersMarried = json['sisters_married'];
     aboutMyFamily = json['about_my_family'];
     hobbiesInterests = json['hobbies_interests'];
+    block =List<String>.from(json['block'] ?? []);
     viewsOnEqualRelationship = json['views_on_equal_relationship'];
     favourites = List<String>.from(json['favourites'] ?? []); // New field
     viewers = List<String>.from(json['viewers'] ?? []);
@@ -221,6 +224,7 @@ class ProfileModel {
     data['about_my_family'] = this.aboutMyFamily;
     data['hobbies_interests'] = this.hobbiesInterests;
     data['views_on_equal_relationship'] = this.viewsOnEqualRelationship;
+    data['block'] = this.block;
     data['favourites'] = this.favourites; // New field
     data['viewers'] = this.viewers; // New field
     data['requests'] = this.requests; // New field

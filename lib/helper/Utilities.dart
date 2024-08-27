@@ -38,6 +38,9 @@ class Utilities{
   static List<String> SortingOptions = ["Viewed you","Shortlisted by you", "Horoscope Match"];
 
   static String UserUiId = "";
+  static String FcmToken = "";
+  static String ProfileCollectionName = "";
+  static String SelfCollectionName = "";
 
 
   static showProgress() {

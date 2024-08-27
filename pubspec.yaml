@@ -47,7 +47,8 @@ dependencies:
   firebase_auth: any
   flutter_svg: ^1.1.6
   image_picker: ^1.0.8
-  fluttertoast: any
+  fluttertoast: 8.2.5
+  firebase_messaging: 14.7.19
 
 
 dev_dependencies:

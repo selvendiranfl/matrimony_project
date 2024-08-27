@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matrimony_app/firebase_options.dart';
@@ -11,6 +12,7 @@ import 'package:matrimony_app/view/bloc/loginBloc/log_in_bloc.dart';
 
 
 import 'allImports.dart';
+import 'firebase_push_notification_service.dart';
 import 'helper/navigatorService.dart';
 
 
@@ -19,9 +21,11 @@ void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  await FirebaseMessaging.instance.getInitialMessage();
+  PushNotificationService().initialize();
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

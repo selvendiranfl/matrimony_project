@@ -51,7 +51,15 @@ class Registrationscreen3Bloc extends Bloc<Registrationscreen3Event, Registratio
           print("-----"+Utilities.profileUser.name.toString());
           print("-----"+Utilities.profileUser.gender.toString());
           print("----check---"+Utilities.profileUser.favourites.toString());
-
+          if(Utilities.profileUser.gender == "Male"){
+            Utilities.ProfileCollectionName = "FeMaleprofiles";
+            Utilities.SelfCollectionName = "Maleprofiles";
+          }else{
+            Utilities.ProfileCollectionName = "Maleprofiles";
+            Utilities.SelfCollectionName = "FeMaleprofiles";
+          }
+          print("-----"+Utilities.ProfileCollectionName.toString());
+          print("-----"+Utilities.SelfCollectionName.toString());
           print(Utilities.UserUiId);
           emit(FetchUserProfileSuccessState());
         }else{

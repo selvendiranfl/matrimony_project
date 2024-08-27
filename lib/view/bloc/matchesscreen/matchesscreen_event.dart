@@ -13,5 +13,9 @@ class FetchSortDataEvent extends MatchesscreenEvent{}
 
 class UpdateUserDataEvent extends MatchesscreenEvent{}
 
+class ReportUserEvent extends MatchesscreenEvent{}
+
+class BlockUserEvent extends MatchesscreenEvent{}
+
 
 

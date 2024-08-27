@@ -17,10 +17,11 @@ class HomescreenblocBloc extends Bloc<HomescreenblocEvent, HomescreenblocState> 
 
     on<HomescreenblocEvent>((event, emit) async {
       if(event is FetchProfileEvent){
-        print("-----Event is Called---");
-        if(Utilities.profileUser.gender == "Male"){
+        Utilities.showProgress();
+        print("-----Event is Called-----");
+
           try{
-            final result = await firebaseservice.getFeMaleProfiles();
+            final result = await firebaseservice.getProfiles();
             if(result != null){
 
               Utilities.AllProfilesList.addAll(result);
@@ -30,25 +31,9 @@ class HomescreenblocBloc extends Bloc<HomescreenblocEvent, HomescreenblocState> 
                 print("----names---"+Utilities.AllProfilesList[i].brothersMarried.toString());
               }
             }
-
+            Utilities.dismissProgress();
           }catch(e){
             print("Error during fetching: $e");
-          }
-        }else{
-          try{
-            final result = await firebaseservice.getMaleProfiles();
-            if(result != null){
-
-              Utilities.AllProfilesList.addAll(result);
-
-              for(int i=0;i<Utilities.AllProfilesList.length;i++){
-                print("----names---"+Utilities.AllProfilesList[0].name.toString());
-              }
-            }
-
-          }catch(e){
-            print("Error during fetching: $e");
-          }
         }
 
       }
