@@ -16,19 +16,29 @@ class MailboxBloc extends Bloc<MailboxEvent, MailboxState> {
 
   MailboxBloc() : super(MailboxInitial()) {
     on<MailboxEvent>((event, emit) async {
-      if(event is FetchRequestDataEvent) {
+      if (event is FetchRequestDataEvent) {
         RequestProfileList.clear();
         Utilities.showProgress();
-        print("---Viewed you-----");
+        print("---Fetching request data-----");
+
         for (int i = 0; i < Utilities.profileUser.requests!.length; i++) {
           print("---Requested you-----${Utilities.profileUser.requests![i]}");
-          final response = await firebaseservice.getProfileByUiId(
-              Utilities.profileUser.requests![i]);
-          RequestProfileList.add(response!);
+
+          final response = await firebaseservice.getProfileByUiId(Utilities.profileUser.requests![i]);
+
+          if (response != null) {
+            // Check if the profile's UiId is not in block or blockme lists
+            if (!Utilities.profileUser.block!.contains(response.UiId) &&
+                !Utilities.profileUser.blockme!.contains(response.UiId)) {
+              RequestProfileList.add(response);
+            }
+          }
         }
+
         Utilities.dismissProgress();
         emit(FetchRequestDatastate());
       }
+
 
       if(event is AcceptRequestEvent){
         Utilities.showProgress();

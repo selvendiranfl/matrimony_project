@@ -462,34 +462,56 @@ class FireBaseService{
     ProfileModel? profile;
 
     try {
-        // Query the documents where 'UiId' is equal to the given uiid
-        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-            .collection(Utilities.SelfCollectionName)
-            .where('UiId', isEqualTo: uiid)
+      // Query the documents where 'UiId' is equal to the given uiid
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection(Utilities.SelfCollectionName)
+          .where('UiId', isEqualTo: uiid)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        for (QueryDocumentSnapshot document in querySnapshot.docs) {
+          // Update the block array in the document
+          await FirebaseFirestore.instance
+              .collection(Utilities.SelfCollectionName)
+              .doc(document.id)
+              .update({
+            'block': FieldValue.arrayUnion([blockId])
+          });
+
+          // Re-fetch the document to get updated data
+          DocumentSnapshot updatedDocument = await FirebaseFirestore.instance
+              .collection(Utilities.SelfCollectionName)
+              .doc(document.id)
+              .get();
+
+          // Convert the updated document to a ProfileModel and return it
+          profile = ProfileModel.fromJson(
+              updatedDocument.data() as Map<String, dynamic>);
+        }
+
+        // Now update the blocked user's collection
+        QuerySnapshot blockedUserQuerySnapshot = await FirebaseFirestore.instance
+            .collection(Utilities.ProfileCollectionName)
+            .where('UiId', isEqualTo: blockId)
             .get();
 
-        if (querySnapshot.docs.isNotEmpty) {
-          for (QueryDocumentSnapshot document in querySnapshot.docs) {
-            // Update the block array in the document
+        if (blockedUserQuerySnapshot.docs.isNotEmpty) {
+          for (QueryDocumentSnapshot document in blockedUserQuerySnapshot.docs) {
+            // Update the blockedBy array in the blocked user's document
             await FirebaseFirestore.instance
-                .collection(Utilities.SelfCollectionName)
+                .collection(Utilities.ProfileCollectionName)  // <-- Make sure this is correct
                 .doc(document.id)
-                .update({
-              'block': FieldValue.arrayUnion([blockId])
-            });
-
-            // Re-fetch the document to get updated data
-            DocumentSnapshot updatedDocument = await FirebaseFirestore.instance
-                .collection(Utilities.SelfCollectionName)
-                .doc(document.id)
-                .get();
-
-            // Convert the updated document to a ProfileModel and return it
-            profile = ProfileModel.fromJson(updatedDocument.data() as Map<String, dynamic>);
+                .set({
+              'blockme': FieldValue.arrayUnion([uiid])
+            }, SetOptions(merge: true));  // <-- This will create the document if it doesn't exist
           }
-          print('Block User saved successfully');
-          return profile;
+        } else {
+          print("Blocked user's profile not found for the provided UiId.");
         }
+
+        print('Block User saved successfully');
+        return profile;
+      }
 
       print("Profile not found for the provided UiId.");
       return null;
@@ -498,6 +520,7 @@ class FireBaseService{
       return null;
     }
   }
+
 
 
 

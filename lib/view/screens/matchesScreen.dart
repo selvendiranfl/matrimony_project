@@ -42,6 +42,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
               if(state is ShortListAdded){
                 bloc.add(FetchSortDataEvent());
               }
+              if(state is BlockedUserSuccessState){
+                bloc.add(RemoveBlockedUsersEvent());
+              }
             },
             child: BlocBuilder<MatchesscreenBloc, MatchesscreenState>(
               builder: (context, state) {
@@ -523,6 +526,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                 print("report");
                                 _showReportDialog(context,Profiles.UiId);
                               }else if(value == "Block"){
+                                print(Profiles.UiId);
                                 _showBlockDialog(context,Profiles.UiId);
                                 print("Block");
                               }

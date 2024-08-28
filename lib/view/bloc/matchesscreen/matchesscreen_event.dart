@@ -17,5 +17,7 @@ class ReportUserEvent extends MatchesscreenEvent{}
 
 class BlockUserEvent extends MatchesscreenEvent{}
 
+class RemoveBlockedUsersEvent extends MatchesscreenEvent{}
+
 
 

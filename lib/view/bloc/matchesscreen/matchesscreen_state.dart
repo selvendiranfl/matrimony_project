@@ -16,3 +16,13 @@ final class ShortListAdded extends MatchesscreenState {}
 final class UpdateUserDataState extends MatchesscreenState {}
 
 final class UpdateUserDataFailedState extends MatchesscreenState {}
+
+final class ReportedSuccessState extends MatchesscreenState {}
+
+final class ReportedFailedState extends MatchesscreenState {}
+
+final class BlockedUserSuccessState extends MatchesscreenState {}
+
+final class BlockedUserFailedState extends MatchesscreenState {}
+
+final class SortListuserUpdatedState extends MatchesscreenState {}

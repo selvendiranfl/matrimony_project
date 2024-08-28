@@ -69,32 +69,57 @@ class MatchesscreenBloc extends Bloc<MatchesscreenEvent, MatchesscreenState> {
           emit(ShortListAdded());
         }
       }
-      if(event is FetchSortDataEvent){
+      if (event is FetchSortDataEvent) {
         print("---FetchSortDataEvent-----");
         SortingUserList.clear();
         Utilities.showProgress();
-        if(SortBy == "Viewed you"){
+
+        if (SortBy == "Viewed you") {
           print("---Viewed you-----");
-          for(int i=0;i<Utilities.profileUser.viewers!.length;i++){
+          for (int i = 0; i < Utilities.profileUser.viewers!.length; i++) {
             print("---Viewed you-----${Utilities.profileUser.viewers![i]}");
+
             final response = await firebaseservice.getProfileByUiId(Utilities.profileUser.viewers![i]);
-            if(response != null){
-              SortingUserList.add(response!);
+
+            if (response != null) {
+              // Check if the profile's UiId is not in block or blockme lists
+              if (!Utilities.profileUser.block!.contains(response.UiId) &&
+                  !Utilities.profileUser.blockme!.contains(response.UiId)) {
+                SortingUserList.add(response);
+              }
             }
-            //print(SortingUserList[i].name);
           }
-        }else if(SortBy == "Shortlisted by you"){
+        } else if (SortBy == "Shortlisted by you") {
           print("---Shortlisted by you-----");
-          for(int i=0;i<Utilities.profileUser.favourites!.length;i++){
+          for (int i = 0; i < Utilities.profileUser.favourites!.length; i++) {
+
             final response = await firebaseservice.getProfileByUiId(Utilities.profileUser.favourites![i]);
-            if(response != null){
-              SortingUserList.add(response!);
+
+            if (response != null) {
+              // Check if the profile's UiId is not in block or blockme lists
+              if (!Utilities.profileUser.block!.contains(response.UiId) &&
+                  !Utilities.profileUser.blockme!.contains(response.UiId)) {
+                SortingUserList.add(response);
+              }
             }
-            print(SortingUserList[i].name);
           }
         }
+
         Utilities.dismissProgress();
         emit(SortListuserGettingState());
+      }
+
+      if (event is RemoveBlockedUsersEvent) {
+        print("---RemoveBlockedUsersEvent-----");
+
+        // Remove profiles from SortingUserList if their UiId is in block or blockme lists
+        SortingUserList.removeWhere((profile) {
+          return Utilities.profileUser.block!.contains(profile.UiId) ||
+              Utilities.profileUser.blockme!.contains(profile.UiId);
+        });
+
+        print("Blocked users removed from SortingUserList.");
+        emit(SortListuserUpdatedState());
       }
 
 
@@ -105,8 +130,10 @@ class MatchesscreenBloc extends Bloc<MatchesscreenEvent, MatchesscreenState> {
         Utilities.dismissProgress();
         if(result == "Success"){
           Utilities.showToast("Report Saved");
+          emit(ReportedSuccessState());
         }else{
           Utilities.showToast("Report failed");
+          emit(ReportedFailedState());
         }
       }
       if(event is BlockUserEvent){
@@ -117,11 +144,20 @@ class MatchesscreenBloc extends Bloc<MatchesscreenEvent, MatchesscreenState> {
 
         if(result != null){
           print("------block check---${result!.block}");
+          // Filter out profiles that are in either block list
+
           Utilities.profileUser = result!;
+          Utilities.AllProfilesList.removeWhere((profile) {
+            return Utilities.profileUser.block!.contains(profile.UiId) ||
+                Utilities.profileUser.blockme!.contains(profile.UiId);
+          });
           print("------bloc check---${Utilities.profileUser.block}");
+          print("------bloc check---${Utilities.profileUser.blockme}");
+          emit(BlockedUserSuccessState());
           Utilities.showToast("Blocked");
         }else{
           Utilities.showToast("Blocking failed");
+          emit(BlockedUserFailedState());
         }
 
       }

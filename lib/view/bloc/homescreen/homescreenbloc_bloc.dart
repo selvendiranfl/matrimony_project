@@ -23,8 +23,13 @@ class HomescreenblocBloc extends Bloc<HomescreenblocEvent, HomescreenblocState> 
           try{
             final result = await firebaseservice.getProfiles();
             if(result != null){
-
-              Utilities.AllProfilesList.addAll(result);
+              print("----blockme---"+Utilities.profileUser.blockme.toString());
+              print("----blockme---"+Utilities.profileUser.block.toString());
+              for (var profile in result) {
+                if (!Utilities.profileUser.block!.contains(profile.UiId) || !Utilities.profileUser.blockme!.contains(profile.UiId)) {
+                  Utilities.AllProfilesList.add(profile);
+                }
+              }
 
               for(int i=0;i<Utilities.AllProfilesList.length;i++){
                 print("----names---"+Utilities.AllProfilesList[i].name.toString());
